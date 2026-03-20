@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hui Lima – Mutual Aid</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #0066cc;
+            --text: #1a1a1a;
+            --text-light: #666;
+            --border: #e5e5e5;
+            --bg: #ffffff;
+            --bg-subtle: #f9f9f9;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+            min-height: 100vh;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 3rem 2rem;
+        }
+
+        header {
+            margin-bottom: 3rem;
+        }
+
+        h1 {
+            font-size: clamp(2rem, 5vw, 3rem);
+            font-weight: 700;
+            color: var(--text);
+            margin-bottom: 0.5rem;
+            letter-spacing: -0.03em;
+        }
+
+        .subtitle {
+            font-size: 1rem;
+            color: var(--text-light);
+            font-weight: 400;
+        }
+
+        .info-box {
+            background: var(--bg-subtle);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .info-box p {
+            margin-bottom: 1rem;
+            line-height: 1.7;
+        }
+
+        .info-box p:last-child {
+            margin-bottom: 0;
+        }
+
+        .info-box a {
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .info-box a:hover {
+            text-decoration: underline;
+        }
+
+        .section-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--text);
+            margin-bottom: 1.5rem;
+            letter-spacing: -0.02em;
+        }
+
+        .add-site {
+            background: var(--bg-subtle);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        label {
+            display: block;
+            font-weight: 500;
+            margin-bottom: 0.5rem;
+            color: var(--text);
+            font-size: 0.9rem;
+        }
+
+        input,
+        textarea {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            background: var(--bg);
+            font-family: inherit;
+            font-size: 1rem;
+            transition: all 0.2s ease;
+        }
+
+        input:focus,
+        textarea:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(0, 102, 204, 0.1);
+        }
+
+        textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        button {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 0.875rem 2rem;
+            font-size: 0.95rem;
+            font-weight: 500;
+            cursor: pointer;
+            border-radius: 6px;
+            transition: all 0.2s ease;
+            font-family: inherit;
+        }
+
+        button:hover {
+            background: #0052a3;
+        }
+
+        button:active {
+            transform: scale(0.98);
+        }
+
+        .sites-list {
+            margin-top: 3rem;
+        }
+
+        .site-card {
+            background: var(--bg);
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            transition: all 0.2s ease;
+        }
+
+        .site-card:hover {
+            border-color: var(--primary);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+        }
+
+        .site-name {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--text);
+            margin-bottom: 0.5rem;
+        }
+
+        .site-location {
+            color: var(--text-light);
+            font-size: 0.95rem;
+            margin-bottom: 0.75rem;
+        }
+
+        .site-details {
+            color: var(--text);
+            line-height: 1.7;
+            margin-bottom: 0.5rem;
+        }
+
+        .site-contact {
+            margin-top: 0.75rem;
+            color: var(--primary);
+            font-weight: 500;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 3rem 2rem;
+            color: var(--text-light);
+        }
+
+        .placeholder-text {
+            color: var(--text-light);
+        }
+
+        .emergency-info {
+            margin-top: 4rem;
+            padding-top: 3rem;
+            border-top: 1px solid var(--border);
+        }
+
+        .county-alert {
+            background: var(--bg-subtle);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .county-alert h3 {
+            font-size: 1.125rem;
+            font-weight: 600;
+            color: var(--text);
+            margin-bottom: 0.75rem;
+        }
+
+        .county-alert ul {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+
+        .county-alert li {
+            margin-bottom: 0.5rem;
+            line-height: 1.6;
+        }
+
+        .county-alert li:last-child {
+            margin-bottom: 0;
+        }
+
+        .county-alert a {
+            color: var(--primary);
+            text-decoration: none;
+            word-break: break-word;
+        }
+
+        .county-alert a:hover {
+            text-decoration: underline;
+        }
+
+        @media (max-width: 640px) {
+            .container {
+                padding: 2rem 1rem;
+            }
+
+            h1 {
+                font-size: 2rem;
+            }
+
+            .info-box {
+                padding: 1.25rem;
+            }
+
+            .add-site {
+                padding: 1.5rem;
+            }
+
+            .site-card {
+                padding: 1.25rem;
+            }
+
+            button {
+                width: 100%;
+            }
+
+            .county-alert {
+                padding: 1.25rem;
+            }
+
+            .emergency-info {
+                margin-top: 3rem;
+                padding-top: 2rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <header>
+            <h1>Hui Lima</h1>
+            <div class="subtitle">Mutual Aid</div>
+        </header>
+
+        <div class="info-box">
+            <p>We're collecting donations to support the ohana in Waialua and Haleiwa that are evacuating. List your donation sites here.</p>
+            <p><strong>What is Hui Lima?</strong> <a href="https://wehewehe.org/gsdl2.85/cgi-bin/hdict?e=q-11000-00---off-0hdict--00-1----0-10-0---0---0direct-10-ED--4--textpukuielbert%2ctextmamaka-----0-1l--11-haw-Zz-1---Zz-1-home-hui--00-3-1-00-0--4----0-0-11-00-0utfZz-8-00&a=d&d=D11567" target="_blank" rel="noopener">Hui</a> means "group" or "club" and <a href="https://wehewehe.org/gsdl2.85/cgi-bin/hdict?e=q-11000-00---off-0hdict--00-1----0-10-0---0---0direct-10-ED--4--textpukuielbert%2ctextmamaka-----0-1l--11-haw-Zz-1---Zz-1-home-lima--00-3-1-00-0--4----0-0-11-00-0utfZz-8-00&a=d&d=D13002" target="_blank" rel="noopener">lima</a> means "hand" or "five" — together they represent hands working together.</p>
+        </div>
+
+        <section class="add-site">
+            <h2 class="section-title">Submit a Donation Site</h2>
+            <p style="margin-bottom: 1.5rem; color: var(--text-light);">Submit your donation site for review. Approved sites will be added to the list.</p>
+            <form name="donation-sites" method="POST" data-netlify="true" netlify-honeypot="bot-field">
+                <input type="hidden" name="form-name" value="donation-sites">
+                <p hidden>
+                    <label>Don't fill this out: <input name="bot-field"></label>
+                </p>
+                <div class="form-group">
+                    <label for="siteName">Site Name</label>
+                    <input type="text" id="siteName" name="siteName" required placeholder="e.g., Kalihi Valley Station">
+                </div>
+                <div class="form-group">
+                    <label for="siteLocation">Location / Address</label>
+                    <input type="text" id="siteLocation" name="siteLocation" required placeholder="e.g., 1234 Kalihi St, Honolulu">
+                </div>
+                <div class="form-group">
+                    <label for="siteDetails">Details (hours, needs, instructions)</label>
+                    <textarea id="siteDetails" name="siteDetails" placeholder="e.g., Open daily 9am-5pm. Accepting non-perishable food, clothing, hygiene items."></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="siteContact">Contact (phone, email, or social media)</label>
+                    <input type="text" id="siteContact" name="siteContact" placeholder="e.g., (808) 555-1234 or @username">
+                </div>
+                <button type="submit">Submit for Review</button>
+            </form>
+        </section>
+
+        <section class="sites-list">
+            <h2 class="section-title">Donation Sites</h2>
+            <div id="sitesList"></div>
+        </section>
+
+        <section class="emergency-info">
+            <h2 class="section-title">County Emergency Alert Sign-Up Information</h2>
+            
+            <div class="county-alert">
+                <h3>Honolulu (Oʻahu)</h3>
+                <ul>
+                    <li>HNL Alert – Text <strong>HNLALERT</strong> to <strong>888777</strong> to opt in</li>
+                    <li>Info: <a href="https://www.honolulu.gov/dem/hnl-alert" target="_blank" rel="noopener">www.honolulu.gov/dem/hnl-alert</a></li>
+                </ul>
+            </div>
+
+            <div class="county-alert">
+                <h3>Kauaʻi County</h3>
+                <ul>
+                    <li>Wireless Emergency Notification System (WENS)</li>
+                    <li>Sign up online: <a href="https://entry.inspironlogistics.com/kauai_hi/wens.cfm" target="_blank" rel="noopener">entry.inspironlogistics.com/kauai_hi/wens.cfm</a></li>
+                </ul>
+            </div>
+
+            <div class="county-alert">
+                <h3>Maui County</h3>
+                <ul>
+                    <li>MEMA Alerts (via CivicReady)</li>
+                    <li>Sign up online: <a href="https://www.mauicounty.gov/list.aspx" target="_blank" rel="noopener">www.mauicounty.gov/list.aspx</a></li>
+                    <li>Or text <strong>Mauialerts</strong> to <strong>38276</strong></li>
+                    <li>Optional: Download the myAlerts mobile app (iOS/Android)</li>
+                </ul>
+            </div>
+
+            <div class="county-alert">
+                <h3>Hawaiʻi County (Big Island)</h3>
+                <ul>
+                    <li>Blackboard Connect Emergency Notification System</li>
+                    <li>Sign up: <a href="https://countyofhawaii.portal.finalsiteconnect.com" target="_blank" rel="noopener">countyofhawaii.portal.finalsiteconnect.com</a></li>
+                    <li>Text <strong>HAWAIIALERTS</strong> to <strong>888777</strong> to sign up for alerts</li>
+                </ul>
+            </div>
+        </section>
+    </div>
+
+    <script>
+        // Load and display donation sites from sites.json
+        async function loadSites() {
+            try {
+                const response = await fetch('sites.json');
+                const sites = await response.json();
+                renderSites(sites);
+            } catch (error) {
+                console.error('Error loading sites:', error);
+                document.getElementById('sitesList').innerHTML = 
+                    '<div class="empty-state">Unable to load donation sites. Please try refreshing the page.</div>';
+            }
+        }
+
+        // Render sites list
+        function renderSites(sites) {
+            const sitesList = document.getElementById('sitesList');
+
+            if (!sites || sites.length === 0) {
+                sitesList.innerHTML = '<div class="empty-state">No donation sites listed yet.</div>';
+                return;
+            }
+
+            sitesList.innerHTML = sites.map((site) => {
+                const hasDetails = site.details && site.details.trim() !== '';
+                const hasContact = site.contact && site.contact.trim() !== '';
+
+                return `
+                    <div class="site-card">
+                        <div class="site-name">${escapeHtml(site.name)}</div>
+                        <div class="site-location">📍 ${escapeHtml(site.location)}</div>
+                        ${hasDetails 
+                            ? `<div class="site-details">${escapeHtml(site.details)}</div>` 
+                            : '<div class="site-details placeholder-text">No details provided</div>'}
+                        ${hasContact 
+                            ? `<div class="site-contact">Contact: ${escapeHtml(site.contact)}</div>` 
+                            : '<div class="site-contact placeholder-text">No contact information provided</div>'}
+                    </div>
+                `;
+            }).join('');
+        }
+
+        // Escape HTML to prevent XSS
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+
+        // Load sites on page load
+        loadSites();
+    </script>
+</body>
+
+</html>
