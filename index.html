@@ -19,6 +19,8 @@
             --border: #e5e5e5;
             --bg: #ffffff;
             --bg-subtle: #f9f9f9;
+            --success: #16a34a;
+            --danger: #dc2626;
         }
 
         body {
@@ -38,6 +40,13 @@
 
         header {
             margin-bottom: 3rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+        }
+
+        .header-left {
+            flex: 1;
         }
 
         h1 {
@@ -52,6 +61,50 @@
             font-size: 1rem;
             color: var(--text-light);
             font-weight: 400;
+        }
+
+        .auth-area {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding-top: 0.5rem;
+        }
+
+        .auth-area .user-name {
+            font-size: 0.9rem;
+            color: var(--text-light);
+        }
+
+        .btn-sign-in,
+        .btn-sign-out {
+            padding: 0.5rem 1rem;
+            font-size: 0.85rem;
+            border-radius: 6px;
+            cursor: pointer;
+            font-family: inherit;
+            font-weight: 500;
+            border: 1px solid var(--border);
+            transition: all 0.2s ease;
+        }
+
+        .btn-sign-in {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+
+        .btn-sign-in:hover {
+            background: #0052a3;
+        }
+
+        .btn-sign-out {
+            background: var(--bg);
+            color: var(--text-light);
+        }
+
+        .btn-sign-out:hover {
+            border-color: var(--danger);
+            color: var(--danger);
         }
 
         .info-box {
@@ -89,21 +142,64 @@
             letter-spacing: -0.02em;
         }
 
-        .add-site {
-            background: var(--bg-subtle);
-            border: 1px solid var(--border);
-            border-radius: 8px;
-            padding: 2rem;
-            margin-bottom: 3rem;
+        /* Action buttons row */
+        .action-buttons {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
         }
 
-        .volunteer-request,
-        .volunteer-signup {
+        .action-btn {
+            background: var(--bg);
+            color: var(--primary);
+            border: 2px solid var(--primary);
+            padding: 0.875rem 1.5rem;
+            font-size: 0.95rem;
+            font-weight: 600;
+            cursor: pointer;
+            border-radius: 8px;
+            transition: all 0.2s ease;
+            font-family: inherit;
+            flex: 1;
+            min-width: 200px;
+            text-align: center;
+        }
+
+        .action-btn:hover {
+            background: var(--primary);
+            color: white;
+        }
+
+        .action-btn.active {
+            background: var(--primary);
+            color: white;
+        }
+
+        /* Form sections */
+        .form-section {
+            display: none;
             background: var(--bg-subtle);
             border: 1px solid var(--border);
             border-radius: 8px;
             padding: 2rem;
-            margin-bottom: 3rem;
+            margin-bottom: 2rem;
+            animation: slideDown 0.2s ease;
+        }
+
+        .form-section.visible {
+            display: block;
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-8px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
         .form-group {
@@ -142,7 +238,7 @@
             min-height: 100px;
         }
 
-        button {
+        button[type="submit"] {
             background: var(--primary);
             color: white;
             border: none;
@@ -155,14 +251,97 @@
             font-family: inherit;
         }
 
-        button:hover {
+        button[type="submit"]:hover {
             background: #0052a3;
         }
 
-        button:active {
+        button[type="submit"]:active {
             transform: scale(0.98);
         }
 
+        /* User dashboard */
+        .dashboard {
+            display: none;
+            margin-bottom: 3rem;
+        }
+
+        .dashboard.visible {
+            display: block;
+        }
+
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+        }
+
+        .dashboard-card {
+            background: var(--bg-subtle);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 1.5rem;
+        }
+
+        .dashboard-card h3 {
+            font-size: 1rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: var(--text);
+        }
+
+        .dashboard-item {
+            background: var(--bg);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            padding: 1rem;
+            margin-bottom: 0.75rem;
+            position: relative;
+        }
+
+        .dashboard-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .dashboard-item .item-title {
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+        }
+
+        .dashboard-item .item-detail {
+            font-size: 0.85rem;
+            color: var(--text-light);
+        }
+
+        .dashboard-item .item-date {
+            font-size: 0.8rem;
+            color: var(--text-light);
+            margin-top: 0.5rem;
+        }
+
+        .dashboard-item .btn-remove {
+            position: absolute;
+            top: 0.75rem;
+            right: 0.75rem;
+            background: none;
+            border: none;
+            color: var(--text-light);
+            cursor: pointer;
+            font-size: 1.1rem;
+            padding: 0.25rem;
+            line-height: 1;
+        }
+
+        .dashboard-item .btn-remove:hover {
+            color: var(--danger);
+        }
+
+        .dashboard-empty {
+            color: var(--text-light);
+            font-size: 0.9rem;
+            font-style: italic;
+        }
+
+        /* Sites list */
         .sites-list {
             margin-top: 3rem;
         }
@@ -284,9 +463,106 @@
             text-decoration: underline;
         }
 
+        /* Toast notification */
+        .toast {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            background: var(--success);
+            color: white;
+            padding: 1rem 1.5rem;
+            border-radius: 8px;
+            font-weight: 500;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            transform: translateY(100px);
+            opacity: 0;
+            transition: all 0.3s ease;
+            z-index: 1000;
+        }
+
+        .toast.show {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        /* Auth modal */
+        .auth-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.4);
+            z-index: 999;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .auth-overlay.visible {
+            display: flex;
+        }
+
+        .auth-modal {
+            background: var(--bg);
+            border-radius: 12px;
+            padding: 2rem;
+            width: 100%;
+            max-width: 400px;
+            margin: 1rem;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.2);
+        }
+
+        .auth-modal h2 {
+            font-size: 1.25rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .auth-modal .auth-toggle {
+            font-size: 0.9rem;
+            color: var(--text-light);
+            margin-bottom: 1.5rem;
+        }
+
+        .auth-modal .form-group {
+            margin-bottom: 1rem;
+        }
+
+        .auth-modal button[type="submit"] {
+            width: 100%;
+        }
+
+        .auth-modal .auth-error {
+            color: var(--danger);
+            font-size: 0.85rem;
+            margin-bottom: 1rem;
+            display: none;
+        }
+
+        .auth-modal .auth-error.visible {
+            display: block;
+        }
+
+        .auth-close {
+            float: right;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            color: var(--text-light);
+            cursor: pointer;
+            padding: 0;
+            line-height: 1;
+        }
+
+        .auth-close:hover {
+            color: var(--text);
+        }
+
         @media (max-width: 640px) {
             .container {
                 padding: 2rem 1rem;
+            }
+
+            header {
+                flex-direction: column;
+                gap: 1rem;
             }
 
             h1 {
@@ -297,20 +573,27 @@
                 padding: 1.25rem;
             }
 
-            .add-site {
+            .action-buttons {
+                flex-direction: column;
+            }
+
+            .action-btn {
+                min-width: unset;
+            }
+
+            .form-section {
                 padding: 1.5rem;
             }
 
-            .volunteer-request,
-            .volunteer-signup {
-                padding: 1.5rem;
+            .dashboard-grid {
+                grid-template-columns: 1fr;
             }
 
             .site-card {
                 padding: 1.25rem;
             }
 
-            button {
+            button[type="submit"] {
                 width: 100%;
             }
 
@@ -322,6 +605,12 @@
                 margin-top: 3rem;
                 padding-top: 2rem;
             }
+
+            .toast {
+                left: 1rem;
+                right: 1rem;
+                bottom: 1rem;
+            }
         }
     </style>
 </head>
@@ -329,8 +618,13 @@
 <body>
     <div class="container">
         <header>
-            <h1>Hui Lima</h1>
-            <div class="subtitle">Mutual Aid</div>
+            <div class="header-left">
+                <h1>Hui Lima</h1>
+                <div class="subtitle">Mutual Aid</div>
+            </div>
+            <div class="auth-area" id="authArea">
+                <button class="btn-sign-in" id="btnSignIn" onclick="signIn()">Sign In</button>
+            </div>
         </header>
 
         <div class="info-box">
@@ -338,10 +632,18 @@
             <p><strong>What is Hui Lima?</strong> <a href="https://wehewehe.org/gsdl2.85/cgi-bin/hdict?e=q-11000-00---off-0hdict--00-1----0-10-0---0---0direct-10-ED--4--textpukuielbert%2ctextmamaka-----0-1l--11-haw-Zz-1---Zz-1-home-hui--00-3-1-00-0--4----0-0-11-00-0utfZz-8-00&a=d&d=D11567" target="_blank" rel="noopener">Hui</a> means "group" or "club" and <a href="https://wehewehe.org/gsdl2.85/cgi-bin/hdict?e=q-11000-00---off-0hdict--00-1----0-10-0---0---0direct-10-ED--4--textpukuielbert%2ctextmamaka-----0-1l--11-haw-Zz-1---Zz-1-home-lima--00-3-1-00-0--4----0-0-11-00-0utfZz-8-00&a=d&d=D13002" target="_blank" rel="noopener">lima</a> means "hand" or "five" — together they represent hands working together.</p>
         </div>
 
-        <section class="add-site">
+        <!-- Action Buttons -->
+        <div class="action-buttons">
+            <button class="action-btn" onclick="toggleForm('donationForm', this)">List a Donation Site</button>
+            <button class="action-btn" onclick="toggleForm('volunteerRequestForm', this)">Post a Volunteer Opportunity</button>
+            <button class="action-btn" onclick="toggleForm('volunteerSignupForm', this)">I Want to Volunteer</button>
+        </div>
+
+        <!-- Donation Site Form -->
+        <section class="form-section" id="donationForm">
             <h2 class="section-title">Submit a Donation Site</h2>
             <p style="margin-bottom: 1.5rem; color: var(--text-light);">Submit your donation site for review. Approved sites will be added to the list.</p>
-            <form name="donation-sites" method="POST" data-netlify="true" netlify-honeypot="bot-field">
+            <form name="donation-sites" method="POST" data-netlify="true" netlify-honeypot="bot-field" onsubmit="return handleDonationSubmit(event)">
                 <input type="hidden" name="form-name" value="donation-sites">
                 <p hidden>
                     <label>Don't fill this out: <input name="bot-field"></label>
@@ -366,10 +668,11 @@
             </form>
         </section>
 
-        <section class="add-site">
-            <h2 class="section-title">Request Volunteers</h2>
-            <p style="margin-bottom: 1.5rem; color: var(--text-light);">Need volunteers? Submit your request and we'll share it with our volunteer network.</p>
-            <form name="volunteer-requests" method="POST" data-netlify="true" netlify-honeypot="bot-field-2">
+        <!-- Volunteer Request Form -->
+        <section class="form-section" id="volunteerRequestForm">
+            <h2 class="section-title">Post a Volunteer Opportunity</h2>
+            <p style="margin-bottom: 1.5rem; color: var(--text-light);">Need volunteers? Post your opportunity and we'll share it with our volunteer network.</p>
+            <form name="volunteer-requests" method="POST" data-netlify="true" netlify-honeypot="bot-field-2" onsubmit="return handleVolunteerRequestSubmit(event)">
                 <input type="hidden" name="form-name" value="volunteer-requests">
                 <p hidden>
                     <label>Don't fill this out: <input name="bot-field-2"></label>
@@ -390,14 +693,15 @@
                     <label for="volunteerContact">Contact Information</label>
                     <input type="text" id="volunteerContact" name="volunteerContact" required placeholder="e.g., (808) 555-1234 or volunteer@example.com">
                 </div>
-                <button type="submit">Submit Request</button>
+                <button type="submit">Post Opportunity</button>
             </form>
         </section>
 
-        <section class="add-site">
+        <!-- Volunteer Signup Form -->
+        <section class="form-section" id="volunteerSignupForm">
             <h2 class="section-title">Sign Up to Volunteer</h2>
             <p style="margin-bottom: 1.5rem; color: var(--text-light);">Want to help? Sign up and we'll connect you with volunteer opportunities.</p>
-            <form name="volunteer-signups" method="POST" data-netlify="true" netlify-honeypot="bot-field-3">
+            <form name="volunteer-signups" method="POST" data-netlify="true" netlify-honeypot="bot-field-3" onsubmit="return handleVolunteerSignupSubmit(event)">
                 <input type="hidden" name="form-name" value="volunteer-signups">
                 <p hidden>
                     <label>Don't fill this out: <input name="bot-field-3"></label>
@@ -419,8 +723,8 @@
                     <input type="text" id="volunteerArea" name="volunteerArea" required placeholder="e.g., North Shore, Central Oahu">
                 </div>
                 <div class="form-group">
-                    <label for="volunteerSkills">Skills / Availability</label>
-                    <textarea id="volunteerSkills" name="volunteerSkills" placeholder="e.g., Available weekends, have truck for transport, bilingual Spanish/English"></textarea>
+                    <label for="volunteerSkills">Skills</label>
+                    <textarea id="volunteerSkills" name="volunteerSkills" placeholder="e.g., Have truck for transport, bilingual Spanish/English"></textarea>
                 </div>
                 <div class="form-group">
                     <label for="volunteerAvailability">Availability</label>
@@ -430,6 +734,25 @@
             </form>
         </section>
 
+        <!-- User Dashboard (visible when logged in) -->
+        <section class="dashboard" id="dashboard">
+            <h2 class="section-title">My Activity</h2>
+            <div class="dashboard-grid">
+                <div class="dashboard-card">
+                    <h3>Opportunities I Posted</h3>
+                    <div id="myListings">
+                        <p class="dashboard-empty">No opportunities posted yet.</p>
+                    </div>
+                </div>
+                <div class="dashboard-card">
+                    <h3>Volunteer Sign-Ups</h3>
+                    <div id="mySignups">
+                        <p class="dashboard-empty">No sign-ups yet.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
         <section class="sites-list">
             <h2 class="section-title">Donation Sites</h2>
             <div id="sitesList"></div>
@@ -437,9 +760,9 @@
 
         <section class="emergency-info">
             <h2 class="section-title">County Emergency Alert Sign-Up Information</h2>
-            
+
             <div class="county-alert">
-                <h3>Honolulu (Oʻahu)</h3>
+                <h3>Honolulu (O&#699;ahu)</h3>
                 <ul>
                     <li>HNL Alert – Text <strong>HNLALERT</strong> to <strong>888777</strong> to opt in</li>
                     <li>Info: <a href="https://www.honolulu.gov/dem/hnl-alert" target="_blank" rel="noopener">www.honolulu.gov/dem/hnl-alert</a></li>
@@ -447,7 +770,7 @@
             </div>
 
             <div class="county-alert">
-                <h3>Kauaʻi County</h3>
+                <h3>Kaua&#699;i County</h3>
                 <ul>
                     <li>Wireless Emergency Notification System (WENS)</li>
                     <li>Sign up online: <a href="https://entry.inspironlogistics.com/kauai_hi/wens.cfm" target="_blank" rel="noopener">entry.inspironlogistics.com/kauai_hi/wens.cfm</a></li>
@@ -465,7 +788,7 @@
             </div>
 
             <div class="county-alert">
-                <h3>Hawaiʻi County (Big Island)</h3>
+                <h3>Hawai&#699;i County (Big Island)</h3>
                 <ul>
                     <li>Blackboard Connect Emergency Notification System</li>
                     <li>Sign up: <a href="https://countyofhawaii.portal.finalsiteconnect.com" target="_blank" rel="noopener">countyofhawaii.portal.finalsiteconnect.com</a></li>
@@ -480,8 +803,349 @@
         </footer>
     </div>
 
+    <div class="toast" id="toast"></div>
+
+    <!-- Auth Modal -->
+    <div class="auth-overlay" id="authOverlay" onclick="if(event.target===this)closeAuthModal()">
+        <div class="auth-modal">
+            <button class="auth-close" onclick="closeAuthModal()">&times;</button>
+            <h2 id="authModalTitle">Sign In</h2>
+            <p class="auth-toggle">We'll text you a verification code.</p>
+            <div class="auth-error" id="authError"></div>
+            <!-- Step 1: Phone number -->
+            <form id="phoneStep" onsubmit="return handlePhoneSubmit(event)">
+                <div class="form-group">
+                    <label for="authPhone">Phone Number</label>
+                    <input type="tel" id="authPhone" required placeholder="(808) 555-1234">
+                </div>
+                <button type="submit" id="phoneSendBtn">Send Code</button>
+            </form>
+            <!-- Step 2: OTP verification -->
+            <form id="otpStep" onsubmit="return handleOtpSubmit(event)" style="display:none">
+                <div class="form-group">
+                    <label for="authOtp">Verification Code</label>
+                    <input type="text" id="authOtp" required placeholder="123456" maxlength="6" inputmode="numeric" pattern="[0-9]*" autocomplete="one-time-code">
+                </div>
+                <button type="submit">Verify</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Supabase SDK -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+
     <script>
-        // Load and display donation sites from sites.json
+        // ── Configuration ──
+        // Replace these with your Supabase project values (safe to be public — RLS protects data)
+        const SUPABASE_URL = 'https://jsjiwvpizuwvsuaiebyu.supabase.co';
+        const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Impzaml3dnBpenV3dnN1YWllYnl1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQwNDQ0NTQsImV4cCI6MjA4OTYyMDQ1NH0.8SrNb8s6aRmx_gOsO8y0CiwfT3eeQ_B6wH651O3EjX4';
+
+        const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+        // ── State ──
+        let currentUser = null;
+        let pendingPhone = '';
+
+        // ── Supabase Auth (Phone OTP) ──
+        async function initAuth() {
+            const { data: { session } } = await sb.auth.getSession();
+            if (session) {
+                currentUser = session.user;
+            }
+            updateAuthUI();
+
+            sb.auth.onAuthStateChange((_event, session) => {
+                currentUser = session?.user || null;
+                updateAuthUI();
+            });
+        }
+
+        function formatPhoneForDisplay(phone) {
+            // Show last 4 digits
+            return phone.length > 4 ? '***' + phone.slice(-4) : phone;
+        }
+
+        function normalizePhone(input) {
+            // Strip everything except digits
+            const digits = input.replace(/\D/g, '');
+            // If it starts with 1 and is 11 digits, it's a US number
+            if (digits.length === 11 && digits.startsWith('1')) return '+' + digits;
+            // If 10 digits, assume US
+            if (digits.length === 10) return '+1' + digits;
+            // Otherwise prefix with + if not already
+            return '+' + digits;
+        }
+
+        function updateAuthUI() {
+            const authArea = document.getElementById('authArea');
+
+            if (currentUser) {
+                const display = currentUser.phone
+                    ? formatPhoneForDisplay(currentUser.phone)
+                    : 'User';
+                authArea.innerHTML = `
+                    <span class="user-name">${escapeHtml(display)}</span>
+                    <button class="btn-sign-out" onclick="signOut()">Sign Out</button>
+                `;
+                document.getElementById('dashboard').classList.add('visible');
+                renderDashboard();
+            } else {
+                authArea.innerHTML = `<button class="btn-sign-in" onclick="openAuthModal()">Sign In</button>`;
+                document.getElementById('dashboard').classList.remove('visible');
+            }
+        }
+
+        function openAuthModal() {
+            document.getElementById('phoneStep').style.display = '';
+            document.getElementById('otpStep').style.display = 'none';
+            document.getElementById('authModalTitle').textContent = 'Sign In';
+            document.getElementById('authError').classList.remove('visible');
+            document.getElementById('authPhone').value = '';
+            document.getElementById('authOtp').value = '';
+            document.getElementById('authOverlay').classList.add('visible');
+            document.getElementById('authPhone').focus();
+        }
+
+        function closeAuthModal() {
+            document.getElementById('authOverlay').classList.remove('visible');
+            document.getElementById('authError').classList.remove('visible');
+        }
+
+        async function handlePhoneSubmit(e) {
+            e.preventDefault();
+            const errorEl = document.getElementById('authError');
+            const raw = document.getElementById('authPhone').value;
+            pendingPhone = normalizePhone(raw);
+
+            const { error } = await sb.auth.signInWithOtp({ phone: pendingPhone });
+
+            if (error) {
+                errorEl.textContent = error.message;
+                errorEl.classList.add('visible');
+                return false;
+            }
+
+            // Show OTP step
+            document.getElementById('phoneStep').style.display = 'none';
+            document.getElementById('otpStep').style.display = '';
+            document.getElementById('authModalTitle').textContent = 'Enter Code';
+            errorEl.classList.remove('visible');
+            document.getElementById('authOtp').focus();
+            return false;
+        }
+
+        async function handleOtpSubmit(e) {
+            e.preventDefault();
+            const errorEl = document.getElementById('authError');
+            const otp = document.getElementById('authOtp').value;
+
+            const { error } = await sb.auth.verifyOtp({
+                phone: pendingPhone,
+                token: otp,
+                type: 'sms'
+            });
+
+            if (error) {
+                errorEl.textContent = error.message;
+                errorEl.classList.add('visible');
+                return false;
+            }
+
+            closeAuthModal();
+            showToast('Signed in!');
+            return false;
+        }
+
+        async function signOut() {
+            await sb.auth.signOut();
+            showToast('Signed out.');
+        }
+
+        // ── Supabase Data Layer ──
+        // Table: user_activity
+        //   id         uuid primary key default gen_random_uuid()
+        //   user_id    uuid not null references auth.users(id)
+        //   type       text not null  ('listing' or 'signup')
+        //   data       jsonb not null
+        //   created_at timestamptz default now()
+        //
+        // RLS policies use auth.uid() — only the row owner can read/write.
+
+        async function getItems(type) {
+            if (!currentUser) return [];
+            const { data, error } = await sb
+                .from('user_activity')
+                .select('*')
+                .eq('user_id', currentUser.id)
+                .eq('type', type)
+                .order('created_at', { ascending: false });
+            if (error) {
+                console.error('Error fetching items:', error);
+                return [];
+            }
+            return data || [];
+        }
+
+        async function saveItem(type, itemData) {
+            if (!currentUser) return null;
+            const { data, error } = await sb
+                .from('user_activity')
+                .insert({
+                    user_id: currentUser.id,
+                    type: type,
+                    data: itemData
+                })
+                .select()
+                .single();
+            if (error) {
+                console.error('Error saving item:', error);
+                showToast('Error saving — please try again.');
+                return null;
+            }
+            return data;
+        }
+
+        async function removeItem(id) {
+            if (!currentUser) return;
+            const { error } = await sb
+                .from('user_activity')
+                .delete()
+                .eq('id', id)
+                .eq('user_id', currentUser.id);
+            if (error) {
+                console.error('Error removing item:', error);
+                showToast('Error removing — please try again.');
+            }
+        }
+
+        // ── Form Toggle ──
+        function toggleForm(formId, btn) {
+            const form = document.getElementById(formId);
+            const isVisible = form.classList.contains('visible');
+
+            document.querySelectorAll('.form-section').forEach(f => f.classList.remove('visible'));
+            document.querySelectorAll('.action-btn').forEach(b => b.classList.remove('active'));
+
+            if (!isVisible) {
+                form.classList.add('visible');
+                btn.classList.add('active');
+            }
+        }
+
+        // ── Form Submissions ──
+        async function handleDonationSubmit(e) {
+            if (currentUser) {
+                const form = e.target;
+                await saveItem('listing', {
+                    category: 'donation-site',
+                    name: form.siteName.value,
+                    location: form.siteLocation.value,
+                    details: form.siteDetails.value,
+                    contact: form.siteContact.value
+                });
+                renderDashboard();
+            }
+            showToast('Donation site submitted for review!');
+            return true;
+        }
+
+        async function handleVolunteerRequestSubmit(e) {
+            if (currentUser) {
+                const form = e.target;
+                await saveItem('listing', {
+                    category: 'volunteer-request',
+                    name: form.orgName.value,
+                    location: form.volunteerLocation.value,
+                    needs: form.volunteerNeeds.value,
+                    contact: form.volunteerContact.value
+                });
+                renderDashboard();
+            }
+            showToast('Volunteer opportunity posted!');
+            return true;
+        }
+
+        async function handleVolunteerSignupSubmit(e) {
+            if (currentUser) {
+                const form = e.target;
+                await saveItem('signup', {
+                    name: form.volunteerName.value,
+                    email: form.volunteerEmail.value,
+                    area: form.volunteerArea.value,
+                    skills: form.volunteerSkills.value,
+                    availability: form.volunteerAvailability.value
+                });
+                renderDashboard();
+            }
+            showToast('Volunteer sign-up submitted!');
+            return true;
+        }
+
+        // ── Dashboard ──
+        async function renderDashboard() {
+            if (!currentUser) return;
+
+            const listings = await getItems('listing');
+            const signups = await getItems('signup');
+
+            const listingsEl = document.getElementById('myListings');
+            const signupsEl = document.getElementById('mySignups');
+
+            if (listings.length === 0) {
+                listingsEl.innerHTML = '<p class="dashboard-empty">No opportunities posted yet.</p>';
+            } else {
+                listingsEl.innerHTML = listings.map(item => {
+                    const label = item.data.category === 'donation-site' ? 'Donation Site' : 'Volunteer Need';
+                    const date = new Date(item.created_at).toLocaleDateString();
+                    return `
+                        <div class="dashboard-item">
+                            <button class="btn-remove" onclick="removeListing('${item.id}')" title="Remove">&times;</button>
+                            <div class="item-title">${escapeHtml(item.data.name)}</div>
+                            <div class="item-detail">${escapeHtml(label)} — ${escapeHtml(item.data.location)}</div>
+                            <div class="item-date">Posted ${date}</div>
+                        </div>
+                    `;
+                }).join('');
+            }
+
+            if (signups.length === 0) {
+                signupsEl.innerHTML = '<p class="dashboard-empty">No sign-ups yet.</p>';
+            } else {
+                signupsEl.innerHTML = signups.map(item => {
+                    const date = new Date(item.created_at).toLocaleDateString();
+                    return `
+                        <div class="dashboard-item">
+                            <button class="btn-remove" onclick="removeSignup('${item.id}')" title="Remove">&times;</button>
+                            <div class="item-title">${escapeHtml(item.data.name)}</div>
+                            <div class="item-detail">${escapeHtml(item.data.area)}${item.data.skills ? ' — ' + escapeHtml(item.data.skills) : ''}</div>
+                            <div class="item-date">Signed up ${date}</div>
+                        </div>
+                    `;
+                }).join('');
+            }
+        }
+
+        async function removeListing(id) {
+            await removeItem(id);
+            await renderDashboard();
+            showToast('Listing removed.');
+        }
+
+        async function removeSignup(id) {
+            await removeItem(id);
+            await renderDashboard();
+            showToast('Sign-up removed.');
+        }
+
+        // ── Toast ──
+        function showToast(message) {
+            const toast = document.getElementById('toast');
+            toast.textContent = message;
+            toast.classList.add('show');
+            setTimeout(() => toast.classList.remove('show'), 3000);
+        }
+
+        // ── Sites List ──
         async function loadSites() {
             try {
                 const response = await fetch('sites.json');
@@ -489,12 +1153,11 @@
                 renderSites(sites);
             } catch (error) {
                 console.error('Error loading sites:', error);
-                document.getElementById('sitesList').innerHTML = 
+                document.getElementById('sitesList').innerHTML =
                     '<div class="empty-state">Unable to load donation sites. Please try refreshing the page.</div>';
             }
         }
 
-        // Render sites list
         function renderSites(sites) {
             const sitesList = document.getElementById('sitesList');
 
@@ -510,26 +1173,26 @@
                 return `
                     <div class="site-card">
                         <div class="site-name">${escapeHtml(site.name)}</div>
-                        <div class="site-location">📍 ${escapeHtml(site.location)}</div>
-                        ${hasDetails 
-                            ? `<div class="site-details">${escapeHtml(site.details)}</div>` 
+                        <div class="site-location">${escapeHtml(site.location)}</div>
+                        ${hasDetails
+                            ? `<div class="site-details">${escapeHtml(site.details)}</div>`
                             : '<div class="site-details placeholder-text">No details provided</div>'}
-                        ${hasContact 
-                            ? `<div class="site-contact">Contact: ${escapeHtml(site.contact)}</div>` 
+                        ${hasContact
+                            ? `<div class="site-contact">Contact: ${escapeHtml(site.contact)}</div>`
                             : '<div class="site-contact placeholder-text">No contact information provided</div>'}
                     </div>
                 `;
             }).join('');
         }
 
-        // Escape HTML to prevent XSS
         function escapeHtml(text) {
             const div = document.createElement('div');
             div.textContent = text;
             return div.innerHTML;
         }
 
-        // Load sites on page load
+        // ── Init ──
+        initAuth();
         loadSites();
     </script>
 </body>
