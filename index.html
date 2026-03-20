@@ -537,8 +537,194 @@
             margin-bottom: 1.5rem;
         }
 
+        .auth-tabs {
+            display: flex;
+            gap: 0;
+            margin-bottom: 1.5rem;
+            border-bottom: 2px solid var(--border);
+        }
+
+        .auth-tab {
+            flex: 1;
+            padding: 0.6rem 1rem;
+            background: none;
+            border: none;
+            border-bottom: 2px solid transparent;
+            margin-bottom: -2px;
+            font-family: inherit;
+            font-size: 0.9rem;
+            font-weight: 500;
+            color: var(--text-light);
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .auth-tab.active {
+            color: var(--primary);
+            border-bottom-color: var(--primary);
+        }
+
+        .auth-tab:hover {
+            color: var(--text);
+        }
+
         .auth-modal .form-group {
             margin-bottom: 1rem;
+        }
+
+        /* Tags input */
+        .tags-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            padding: 0.5rem;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            background: var(--bg);
+            min-height: 44px;
+            cursor: text;
+            transition: all 0.2s ease;
+        }
+
+        .tags-container:focus-within {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(0, 102, 204, 0.1);
+        }
+
+        .tags-container .tag {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.3rem;
+            background: #e3f2fd;
+            color: #1565c0;
+            padding: 0.25rem 0.6rem;
+            border-radius: 999px;
+            font-size: 0.85rem;
+            font-weight: 500;
+        }
+
+        .tags-container .tag button {
+            background: none;
+            border: none;
+            color: #1565c0;
+            cursor: pointer;
+            font-size: 1rem;
+            padding: 0;
+            line-height: 1;
+        }
+
+        .tags-container .tag button:hover {
+            color: var(--danger);
+        }
+
+        .tags-container input {
+            border: none;
+            outline: none;
+            flex: 1;
+            min-width: 120px;
+            padding: 0.25rem;
+            font-size: 0.9rem;
+            box-shadow: none;
+        }
+
+        .tags-container input:focus {
+            box-shadow: none;
+        }
+
+        .autocomplete-wrapper {
+            position: relative;
+        }
+
+        .autocomplete-list {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            background: var(--bg);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            max-height: 200px;
+            overflow-y: auto;
+            z-index: 50;
+            display: none;
+        }
+
+        .autocomplete-list.visible {
+            display: block;
+        }
+
+        .autocomplete-list div {
+            padding: 0.5rem 0.75rem;
+            cursor: pointer;
+            font-size: 0.9rem;
+        }
+
+        .autocomplete-list div:hover,
+        .autocomplete-list div.highlighted {
+            background: var(--bg-subtle);
+        }
+
+        /* Items grid */
+        .items-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .item-card {
+            background: var(--bg);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 1.25rem;
+            position: relative;
+            transition: all 0.2s ease;
+        }
+
+        .item-card:hover {
+            border-color: var(--primary);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+
+        .item-card .item-card-title {
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+        }
+
+        .item-card .item-card-desc {
+            font-size: 0.85rem;
+            color: var(--text-light);
+            margin-bottom: 0.5rem;
+        }
+
+        .item-card .item-card-contact {
+            font-size: 0.8rem;
+            color: var(--primary);
+            font-weight: 500;
+        }
+
+        .item-card .item-card-date {
+            font-size: 0.75rem;
+            color: var(--text-light);
+            margin-top: 0.5rem;
+        }
+
+        .item-card .btn-remove {
+            position: absolute;
+            top: 0.5rem;
+            right: 0.5rem;
+            background: none;
+            border: none;
+            color: var(--text-light);
+            cursor: pointer;
+            font-size: 1.1rem;
+            padding: 0.25rem;
+            line-height: 1;
+        }
+
+        .item-card .btn-remove:hover {
+            color: var(--danger);
         }
 
         .auth-modal button[type="submit"] {
@@ -753,6 +939,37 @@
         <!-- User Dashboard (visible when logged in) -->
         <section class="dashboard" id="dashboard">
             <h2 class="section-title">My Activity</h2>
+
+            <!-- My Skills -->
+            <div class="dashboard-card" style="margin-bottom:1.5rem;">
+                <h3>My Skills</h3>
+                <p style="font-size:0.85rem;color:var(--text-light);margin-bottom:0.75rem;">What can you offer the community? Type to add skills.</p>
+                <div class="autocomplete-wrapper">
+                    <div class="tags-container" id="skillsTagsContainer" onclick="document.getElementById('skillsInput').focus()">
+                        <input type="text" id="skillsInput" placeholder="Type a skill..." oninput="onSkillInput(event)" onkeydown="onSkillKeydown(event)">
+                    </div>
+                    <div class="autocomplete-list" id="skillsAutocomplete"></div>
+                </div>
+            </div>
+
+            <!-- Items to Donate -->
+            <div class="dashboard-card" style="margin-bottom:1.5rem;">
+                <h3>Items I Can Donate</h3>
+                <p style="font-size:0.85rem;color:var(--text-light);margin-bottom:0.75rem;">List items you'd like to give away — like a free marketplace for the community.</p>
+                <form onsubmit="return handleItemSubmit(event)" style="margin-bottom:1rem;">
+                    <div style="display:flex;gap:0.5rem;flex-wrap:wrap;">
+                        <input type="text" id="itemName" required placeholder="Item name" style="flex:2;min-width:150px;">
+                        <input type="text" id="itemDesc" placeholder="Brief description" style="flex:3;min-width:180px;">
+                    </div>
+                    <div style="display:flex;gap:0.5rem;margin-top:0.5rem;flex-wrap:wrap;">
+                        <input type="text" id="itemContact" placeholder="Contact (phone or email)" style="flex:2;min-width:150px;">
+                        <input type="text" id="itemLocation" placeholder="Pickup location" style="flex:2;min-width:150px;">
+                        <button type="submit" style="padding:0.6rem 1.25rem;white-space:nowrap;">Add Item</button>
+                    </div>
+                </form>
+                <div class="items-grid" id="myItems"></div>
+            </div>
+
             <div class="dashboard-grid">
                 <div class="dashboard-card">
                     <h3>Opportunities I Posted</h3>
@@ -767,6 +984,13 @@
                     </div>
                 </div>
             </div>
+        </section>
+
+        <!-- Public Items Board -->
+        <section class="sites-list">
+            <h2 class="section-title">Free Items Available</h2>
+            <p style="margin-bottom: 1rem; color: var(--text-light);">Community members offering items for free. Sign in to list your own.</p>
+            <div class="items-grid" id="publicItems"><div class="empty-state">Loading...</div></div>
         </section>
 
         <section class="sites-list">
@@ -840,23 +1064,42 @@
         <div class="auth-modal">
             <button class="auth-close" onclick="closeAuthModal()">&times;</button>
             <h2 id="authModalTitle">Sign In</h2>
-            <p class="auth-toggle">We'll text you a verification code.</p>
+            <div class="auth-tabs">
+                <button class="auth-tab active" id="tabPhone" onclick="switchAuthTab('phone')">Phone</button>
+                <button class="auth-tab" id="tabEmail" onclick="switchAuthTab('email')">Email</button>
+            </div>
             <div class="auth-error" id="authError"></div>
-            <!-- Step 1: Phone number -->
+            <!-- Phone: Step 1 -->
             <form id="phoneStep" onsubmit="return handlePhoneSubmit(event)">
+                <p class="auth-toggle">We'll text you a verification code.</p>
                 <div class="form-group">
                     <label for="authPhone">Phone Number</label>
                     <input type="tel" id="authPhone" required placeholder="(808) 555-1234">
                 </div>
                 <button type="submit" id="phoneSendBtn">Send Code</button>
             </form>
-            <!-- Step 2: OTP verification -->
+            <!-- Phone: Step 2 -->
             <form id="otpStep" onsubmit="return handleOtpSubmit(event)" style="display:none">
                 <div class="form-group">
                     <label for="authOtp">Verification Code</label>
                     <input type="text" id="authOtp" required placeholder="123456" maxlength="6" inputmode="numeric" pattern="[0-9]*" autocomplete="one-time-code">
                 </div>
                 <button type="submit">Verify</button>
+            </form>
+            <!-- Email: Sign In / Sign Up -->
+            <form id="emailStep" onsubmit="return handleEmailSubmit(event)" style="display:none">
+                <div class="form-group">
+                    <label for="authEmail">Email</label>
+                    <input type="email" id="authEmail" required placeholder="you@example.com">
+                </div>
+                <div class="form-group">
+                    <label for="authPassword">Password</label>
+                    <input type="password" id="authPassword" required placeholder="At least 6 characters" minlength="6">
+                </div>
+                <button type="submit" id="emailSubmitBtn">Sign In</button>
+                <p class="auth-toggle" style="margin-top:1rem;margin-bottom:0;" id="emailToggleText">
+                    Don't have an account? <a onclick="toggleEmailMode()" style="color:var(--primary);cursor:pointer;font-weight:500;">Sign up</a>
+                </p>
             </form>
         </div>
     </div>
@@ -875,8 +1118,26 @@
         // ── State ──
         let currentUser = null;
         let pendingPhone = '';
+        let emailMode = 'signin';
+        let currentSkills = [];
 
-        // ── Supabase Auth (Phone OTP) ──
+        const SKILL_SUGGESTIONS = [
+            'CDL / truck driving', 'Heavy lifting', 'Chainsaw operation', 'First aid / CPR',
+            'Cooking / meal prep', 'Childcare', 'Elder care', 'Pet care',
+            'Translation (Hawaiian)', 'Translation (Spanish)', 'Translation (Japanese)',
+            'Translation (Tagalog)', 'Carpentry', 'Plumbing', 'Electrical work',
+            'Cleaning / debris removal', 'Boat operation', 'Medical / nursing',
+            'Mental health / counseling', 'Social media / communications',
+            'Photography / documentation', 'Organizing / logistics',
+            'IT / tech support', 'Legal aid', 'Insurance assistance',
+            'Grant writing', 'Fundraising', 'Supply sorting',
+            'Water rescue', 'Mud-out / gutting', 'Mold remediation',
+            'Roof tarping', 'Generator operation', 'Food distribution',
+            'Shelter management', 'Case management', 'Forklift operation',
+            'Sewing / clothing repair', 'Hauling / moving'
+        ];
+
+        // ── Supabase Auth ──
         async function initAuth() {
             const { data: { session } } = await sb.auth.getSession();
             if (session) {
@@ -891,18 +1152,13 @@
         }
 
         function formatPhoneForDisplay(phone) {
-            // Show last 4 digits
             return phone.length > 4 ? '***' + phone.slice(-4) : phone;
         }
 
         function normalizePhone(input) {
-            // Strip everything except digits
             const digits = input.replace(/\D/g, '');
-            // If it starts with 1 and is 11 digits, it's a US number
             if (digits.length === 11 && digits.startsWith('1')) return '+' + digits;
-            // If 10 digits, assume US
             if (digits.length === 10) return '+1' + digits;
-            // Otherwise prefix with + if not already
             return '+' + digits;
         }
 
@@ -910,28 +1166,58 @@
             const authArea = document.getElementById('authArea');
 
             if (currentUser) {
-                const display = currentUser.phone
-                    ? formatPhoneForDisplay(currentUser.phone)
-                    : 'User';
+                const display = currentUser.email
+                    || (currentUser.phone ? formatPhoneForDisplay(currentUser.phone) : 'User');
                 authArea.innerHTML = `
                     <span class="user-name">${escapeHtml(display)}</span>
                     <button class="btn-sign-out" onclick="signOut()">Sign Out</button>
                 `;
                 document.getElementById('dashboard').classList.add('visible');
                 renderDashboard();
+                loadMySkills();
+                loadMyItems();
             } else {
                 authArea.innerHTML = `<button class="btn-sign-in" onclick="openAuthModal()">Sign In</button>`;
                 document.getElementById('dashboard').classList.remove('visible');
             }
         }
 
-        function openAuthModal() {
-            document.getElementById('phoneStep').style.display = '';
-            document.getElementById('otpStep').style.display = 'none';
-            document.getElementById('authModalTitle').textContent = 'Sign In';
+        function switchAuthTab(tab) {
             document.getElementById('authError').classList.remove('visible');
+            document.getElementById('tabPhone').classList.toggle('active', tab === 'phone');
+            document.getElementById('tabEmail').classList.toggle('active', tab === 'email');
+            document.getElementById('phoneStep').style.display = tab === 'phone' ? '' : 'none';
+            document.getElementById('otpStep').style.display = 'none';
+            document.getElementById('emailStep').style.display = tab === 'email' ? '' : 'none';
+            document.getElementById('authModalTitle').textContent = 'Sign In';
+            if (tab === 'email') {
+                emailMode = 'signin';
+                updateEmailToggle();
+                document.getElementById('authEmail').focus();
+            } else {
+                document.getElementById('authPhone').focus();
+            }
+        }
+
+        function toggleEmailMode() {
+            emailMode = emailMode === 'signin' ? 'signup' : 'signin';
+            updateEmailToggle();
+        }
+
+        function updateEmailToggle() {
+            const isSignIn = emailMode === 'signin';
+            document.getElementById('emailSubmitBtn').textContent = isSignIn ? 'Sign In' : 'Sign Up';
+            document.getElementById('emailToggleText').innerHTML = isSignIn
+                ? 'Don\'t have an account? <a onclick="toggleEmailMode()" style="color:var(--primary);cursor:pointer;font-weight:500;">Sign up</a>'
+                : 'Already have an account? <a onclick="toggleEmailMode()" style="color:var(--primary);cursor:pointer;font-weight:500;">Sign in</a>';
+        }
+
+        function openAuthModal() {
+            switchAuthTab('phone');
             document.getElementById('authPhone').value = '';
             document.getElementById('authOtp').value = '';
+            document.getElementById('authEmail') && (document.getElementById('authEmail').value = '');
+            document.getElementById('authPassword') && (document.getElementById('authPassword').value = '');
             document.getElementById('authOverlay').classList.add('visible');
             document.getElementById('authPhone').focus();
         }
@@ -944,18 +1230,15 @@
         async function handlePhoneSubmit(e) {
             e.preventDefault();
             const errorEl = document.getElementById('authError');
-            const raw = document.getElementById('authPhone').value;
-            pendingPhone = normalizePhone(raw);
+            pendingPhone = normalizePhone(document.getElementById('authPhone').value);
 
             const { error } = await sb.auth.signInWithOtp({ phone: pendingPhone });
-
             if (error) {
                 errorEl.textContent = error.message;
                 errorEl.classList.add('visible');
                 return false;
             }
 
-            // Show OTP step
             document.getElementById('phoneStep').style.display = 'none';
             document.getElementById('otpStep').style.display = '';
             document.getElementById('authModalTitle').textContent = 'Enter Code';
@@ -967,28 +1250,220 @@
         async function handleOtpSubmit(e) {
             e.preventDefault();
             const errorEl = document.getElementById('authError');
-            const otp = document.getElementById('authOtp').value;
-
             const { error } = await sb.auth.verifyOtp({
                 phone: pendingPhone,
-                token: otp,
+                token: document.getElementById('authOtp').value,
                 type: 'sms'
             });
-
             if (error) {
                 errorEl.textContent = error.message;
                 errorEl.classList.add('visible');
                 return false;
             }
-
             closeAuthModal();
             showToast('Signed in!');
             return false;
         }
 
+        async function handleEmailSubmit(e) {
+            e.preventDefault();
+            const errorEl = document.getElementById('authError');
+            const email = document.getElementById('authEmail').value;
+            const password = document.getElementById('authPassword').value;
+
+            let result;
+            if (emailMode === 'signup') {
+                result = await sb.auth.signUp({ email, password });
+            } else {
+                result = await sb.auth.signInWithPassword({ email, password });
+            }
+
+            if (result.error) {
+                errorEl.textContent = result.error.message;
+                errorEl.classList.add('visible');
+                return false;
+            }
+
+            if (emailMode === 'signup' && !result.data.session) {
+                closeAuthModal();
+                showToast('Check your email to confirm your account.');
+                return false;
+            }
+
+            closeAuthModal();
+            showToast(emailMode === 'signup' ? 'Account created!' : 'Signed in!');
+            return false;
+        }
+
         async function signOut() {
             await sb.auth.signOut();
+            currentSkills = [];
             showToast('Signed out.');
+        }
+
+        // ── Skills Tags ──
+        async function loadMySkills() {
+            if (!currentUser) return;
+            const items = await getItems('skills');
+            currentSkills = items.length > 0 && items[0].data.skills ? items[0].data.skills : [];
+            renderSkillTags();
+        }
+
+        function renderSkillTags() {
+            const container = document.getElementById('skillsTagsContainer');
+            const input = document.getElementById('skillsInput');
+            // Remove existing tags
+            container.querySelectorAll('.tag').forEach(t => t.remove());
+            // Add tags before input
+            currentSkills.forEach(skill => {
+                const tag = document.createElement('span');
+                tag.className = 'tag';
+                tag.innerHTML = `${escapeHtml(skill)}<button onclick="removeSkill('${escapeHtml(skill)}')">&times;</button>`;
+                container.insertBefore(tag, input);
+            });
+        }
+
+        function onSkillInput(e) {
+            const val = e.target.value.trim().toLowerCase();
+            const list = document.getElementById('skillsAutocomplete');
+            if (val.length < 1) {
+                list.classList.remove('visible');
+                return;
+            }
+            const matches = SKILL_SUGGESTIONS.filter(s =>
+                s.toLowerCase().includes(val) && !currentSkills.includes(s)
+            ).slice(0, 8);
+
+            if (matches.length === 0) {
+                list.classList.remove('visible');
+                return;
+            }
+
+            list.innerHTML = matches.map(m =>
+                `<div onclick="addSkill('${escapeHtml(m)}')">${escapeHtml(m)}</div>`
+            ).join('');
+            list.classList.add('visible');
+        }
+
+        function onSkillKeydown(e) {
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                const val = e.target.value.trim();
+                if (val && !currentSkills.includes(val)) {
+                    addSkill(val);
+                }
+            }
+            if (e.key === 'Escape') {
+                document.getElementById('skillsAutocomplete').classList.remove('visible');
+            }
+        }
+
+        async function addSkill(skill) {
+            if (currentSkills.includes(skill)) return;
+            currentSkills.push(skill);
+            document.getElementById('skillsInput').value = '';
+            document.getElementById('skillsAutocomplete').classList.remove('visible');
+            renderSkillTags();
+            await saveSkills();
+        }
+
+        async function removeSkill(skill) {
+            currentSkills = currentSkills.filter(s => s !== skill);
+            renderSkillTags();
+            await saveSkills();
+        }
+
+        async function saveSkills() {
+            if (!currentUser) return;
+            // Delete existing skills record, then insert new one
+            await sb.from('user_activity').delete()
+                .eq('user_id', currentUser.id).eq('type', 'skills');
+            if (currentSkills.length > 0) {
+                await sb.from('user_activity').insert({
+                    user_id: currentUser.id,
+                    type: 'skills',
+                    data: { skills: currentSkills }
+                });
+            }
+        }
+
+        // ── Items to Donate ──
+        async function handleItemSubmit(e) {
+            e.preventDefault();
+            if (!currentUser) {
+                showToast('Please sign in to list items.');
+                return false;
+            }
+            await saveItem('item', {
+                name: document.getElementById('itemName').value,
+                description: document.getElementById('itemDesc').value,
+                contact: document.getElementById('itemContact').value,
+                location: document.getElementById('itemLocation').value
+            });
+            document.getElementById('itemName').value = '';
+            document.getElementById('itemDesc').value = '';
+            document.getElementById('itemContact').value = '';
+            document.getElementById('itemLocation').value = '';
+            loadMyItems();
+            loadPublicItems();
+            showToast('Item listed!');
+            return false;
+        }
+
+        async function loadMyItems() {
+            if (!currentUser) return;
+            const items = await getItems('item');
+            const el = document.getElementById('myItems');
+            if (items.length === 0) {
+                el.innerHTML = '<p class="dashboard-empty">No items listed yet.</p>';
+                return;
+            }
+            el.innerHTML = items.map(item => `
+                <div class="item-card">
+                    <button class="btn-remove" onclick="removeMyItem('${item.id}')">&times;</button>
+                    <div class="item-card-title">${escapeHtml(item.data.name)}</div>
+                    ${item.data.description ? `<div class="item-card-desc">${escapeHtml(item.data.description)}</div>` : ''}
+                    ${item.data.location ? `<div class="item-card-desc">${escapeHtml(item.data.location)}</div>` : ''}
+                    <div class="item-card-date">${new Date(item.created_at).toLocaleDateString()}</div>
+                </div>
+            `).join('');
+        }
+
+        async function removeMyItem(id) {
+            await removeItem(id);
+            loadMyItems();
+            loadPublicItems();
+            showToast('Item removed.');
+        }
+
+        async function loadPublicItems() {
+            try {
+                const { data, error } = await sb
+                    .from('user_activity')
+                    .select('*')
+                    .eq('type', 'item')
+                    .order('created_at', { ascending: false })
+                    .limit(50);
+
+                const el = document.getElementById('publicItems');
+                if (error || !data || data.length === 0) {
+                    el.innerHTML = '<div class="empty-state">No items available yet. Sign in to list something.</div>';
+                    return;
+                }
+                el.innerHTML = data.map(item => `
+                    <div class="item-card">
+                        <div class="item-card-title">${escapeHtml(item.data.name)}</div>
+                        ${item.data.description ? `<div class="item-card-desc">${escapeHtml(item.data.description)}</div>` : ''}
+                        ${item.data.location ? `<div class="item-card-desc">${escapeHtml(item.data.location)}</div>` : ''}
+                        ${item.data.contact ? `<div class="item-card-contact">${escapeHtml(item.data.contact)}</div>` : ''}
+                        <div class="item-card-date">${new Date(item.created_at).toLocaleDateString()}</div>
+                    </div>
+                `).join('');
+            } catch (e) {
+                console.error('Error loading public items:', e);
+                document.getElementById('publicItems').innerHTML =
+                    '<div class="empty-state">No items available yet.</div>';
+            }
         }
 
         // ── Supabase Data Layer ──
@@ -1264,6 +1739,7 @@
         initAuth();
         loadSites();
         loadBotFindings();
+        loadPublicItems();
     </script>
 </body>
 
