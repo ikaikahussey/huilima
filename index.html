@@ -13,7 +13,7 @@
         }
 
         :root {
-            --primary: #0066cc;
+            --primary: #7c3aed;
             --text: #1a1a1a;
             --text-light: #666;
             --border: #e5e5e5;
@@ -94,7 +94,7 @@
         }
 
         .btn-sign-in:hover {
-            background: #0052a3;
+            background: #6d28d9;
         }
 
         .btn-sign-out {
@@ -230,7 +230,7 @@
         textarea:focus {
             outline: none;
             border-color: var(--primary);
-            box-shadow: 0 0 0 3px rgba(0, 102, 204, 0.1);
+            box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.1);
         }
 
         textarea {
@@ -252,7 +252,7 @@
         }
 
         button[type="submit"]:hover {
-            background: #0052a3;
+            background: #6d28d9;
         }
 
         button[type="submit"]:active {
@@ -588,7 +588,7 @@
 
         .tags-container:focus-within {
             border-color: var(--primary);
-            box-shadow: 0 0 0 3px rgba(0, 102, 204, 0.1);
+            box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.1);
         }
 
         .tags-container .tag {
@@ -970,6 +970,24 @@
                 <div class="items-grid" id="myItems"></div>
             </div>
 
+            <!-- Items I Need -->
+            <div class="dashboard-card" style="margin-bottom:1.5rem;">
+                <h3>Items I Need</h3>
+                <p style="font-size:0.85rem;color:var(--text-light);margin-bottom:0.75rem;">Let the community know what you need — someone may have it.</p>
+                <form onsubmit="return handleNeedSubmit(event)" style="margin-bottom:1rem;">
+                    <div style="display:flex;gap:0.5rem;flex-wrap:wrap;">
+                        <input type="text" id="needName" required placeholder="What do you need?" style="flex:2;min-width:150px;">
+                        <input type="text" id="needDesc" placeholder="Details (size, quantity, urgency)" style="flex:3;min-width:180px;">
+                    </div>
+                    <div style="display:flex;gap:0.5rem;margin-top:0.5rem;flex-wrap:wrap;">
+                        <input type="text" id="needContact" placeholder="Contact (phone or email)" style="flex:2;min-width:150px;">
+                        <input type="text" id="needLocation" placeholder="Your area" style="flex:2;min-width:150px;">
+                        <button type="submit" style="padding:0.6rem 1.25rem;white-space:nowrap;">Post Need</button>
+                    </div>
+                </form>
+                <div class="items-grid" id="myNeeds"></div>
+            </div>
+
             <div class="dashboard-grid">
                 <div class="dashboard-card">
                     <h3>Opportunities I Posted</h3>
@@ -989,8 +1007,15 @@
         <!-- Public Items Board -->
         <section class="sites-list">
             <h2 class="section-title">Free Items Available</h2>
-            <p style="margin-bottom: 1rem; color: var(--text-light);">Community members offering items for free. Sign in to list your own.</p>
+            <p style="margin-bottom: 1rem; color: var(--text-light);">Community members offering items for free. <a href="#" onclick="openAuthModal();return false" style="color:var(--primary);font-weight:500;">Sign in</a> to list your own.</p>
             <div class="items-grid" id="publicItems"><div class="empty-state">Loading...</div></div>
+        </section>
+
+        <!-- Public Needs Board -->
+        <section class="sites-list">
+            <h2 class="section-title">Items Needed</h2>
+            <p style="margin-bottom: 1rem; color: var(--text-light);">Community members looking for supplies or help. <a href="#" onclick="openAuthModal();return false" style="color:var(--primary);font-weight:500;">Sign in</a> to post what you need.</p>
+            <div class="items-grid" id="publicNeeds"><div class="empty-state">Loading...</div></div>
         </section>
 
         <section class="sites-list">
@@ -1176,6 +1201,7 @@
                 renderDashboard();
                 loadMySkills();
                 loadMyItems();
+                loadMyNeeds();
             } else {
                 authArea.innerHTML = `<button class="btn-sign-in" onclick="openAuthModal()">Sign In</button>`;
                 document.getElementById('dashboard').classList.remove('visible');
@@ -1391,7 +1417,7 @@
         async function handleItemSubmit(e) {
             e.preventDefault();
             if (!currentUser) {
-                showToast('Please sign in to list items.');
+                openAuthModal();
                 return false;
             }
             await saveItem('item', {
@@ -1447,7 +1473,7 @@
 
                 const el = document.getElementById('publicItems');
                 if (error || !data || data.length === 0) {
-                    el.innerHTML = '<div class="empty-state">No items available yet. Sign in to list something.</div>';
+                    el.innerHTML = '<div class="empty-state">No items available yet. <a href="#" onclick="openAuthModal();return false" style="color:var(--primary);font-weight:500;">Sign in</a> to list something.</div>';
                     return;
                 }
                 el.innerHTML = data.map(item => `
@@ -1466,15 +1492,86 @@
             }
         }
 
+        // ── Items Needed ──
+        async function handleNeedSubmit(e) {
+            e.preventDefault();
+            if (!currentUser) {
+                openAuthModal();
+                return false;
+            }
+            await saveItem('need', {
+                name: document.getElementById('needName').value,
+                description: document.getElementById('needDesc').value,
+                contact: document.getElementById('needContact').value,
+                location: document.getElementById('needLocation').value
+            });
+            document.getElementById('needName').value = '';
+            document.getElementById('needDesc').value = '';
+            document.getElementById('needContact').value = '';
+            document.getElementById('needLocation').value = '';
+            loadMyNeeds();
+            loadPublicNeeds();
+            showToast('Need posted!');
+            return false;
+        }
+
+        async function loadMyNeeds() {
+            if (!currentUser) return;
+            const items = await getItems('need');
+            const el = document.getElementById('myNeeds');
+            if (items.length === 0) {
+                el.innerHTML = '<p class="dashboard-empty">No needs listed yet.</p>';
+                return;
+            }
+            el.innerHTML = items.map(item => `
+                <div class="item-card">
+                    <button class="btn-remove" onclick="removeMyNeed('${item.id}')">&times;</button>
+                    <div class="item-card-title">${escapeHtml(item.data.name)}</div>
+                    ${item.data.description ? `<div class="item-card-desc">${escapeHtml(item.data.description)}</div>` : ''}
+                    ${item.data.location ? `<div class="item-card-desc">${escapeHtml(item.data.location)}</div>` : ''}
+                    <div class="item-card-date">${new Date(item.created_at).toLocaleDateString()}</div>
+                </div>
+            `).join('');
+        }
+
+        async function removeMyNeed(id) {
+            await removeItem(id);
+            loadMyNeeds();
+            loadPublicNeeds();
+            showToast('Need removed.');
+        }
+
+        async function loadPublicNeeds() {
+            try {
+                const { data, error } = await sb
+                    .from('user_activity')
+                    .select('*')
+                    .eq('type', 'need')
+                    .order('created_at', { ascending: false })
+                    .limit(50);
+
+                const el = document.getElementById('publicNeeds');
+                if (error || !data || data.length === 0) {
+                    el.innerHTML = '<div class="empty-state">No needs posted yet. <a href="#" onclick="openAuthModal();return false" style="color:var(--primary);font-weight:500;">Sign in</a> to let the community know what you need.</div>';
+                    return;
+                }
+                el.innerHTML = data.map(item => `
+                    <div class="item-card">
+                        <div class="item-card-title">${escapeHtml(item.data.name)}</div>
+                        ${item.data.description ? `<div class="item-card-desc">${escapeHtml(item.data.description)}</div>` : ''}
+                        ${item.data.location ? `<div class="item-card-desc">${escapeHtml(item.data.location)}</div>` : ''}
+                        ${item.data.contact ? `<div class="item-card-contact">${escapeHtml(item.data.contact)}</div>` : ''}
+                        <div class="item-card-date">${new Date(item.created_at).toLocaleDateString()}</div>
+                    </div>
+                `).join('');
+            } catch (e) {
+                console.error('Error loading public needs:', e);
+                document.getElementById('publicNeeds').innerHTML =
+                    '<div class="empty-state">No needs posted yet.</div>';
+            }
+        }
+
         // ── Supabase Data Layer ──
-        // Table: user_activity
-        //   id         uuid primary key default gen_random_uuid()
-        //   user_id    uuid not null references auth.users(id)
-        //   type       text not null  ('listing' or 'signup')
-        //   data       jsonb not null
-        //   created_at timestamptz default now()
-        //
-        // RLS policies use auth.uid() — only the row owner can read/write.
 
         async function getItems(type) {
             if (!currentUser) return [];
@@ -1740,6 +1837,7 @@
         loadSites();
         loadBotFindings();
         loadPublicItems();
+        loadPublicNeeds();
     </script>
 </body>
 
