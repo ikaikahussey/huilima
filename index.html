@@ -341,6 +341,22 @@
             font-style: italic;
         }
 
+        /* Category badge */
+        .badge {
+            display: inline-block;
+            font-size: 0.75rem;
+            font-weight: 600;
+            padding: 0.2rem 0.6rem;
+            border-radius: 999px;
+            text-transform: uppercase;
+            letter-spacing: 0.03em;
+        }
+
+        .badge-gofundme { background: #e8f5e9; color: #2e7d32; }
+        .badge-donation-site { background: #e3f2fd; color: #1565c0; }
+        .badge-volunteer-opportunity { background: #fff3e0; color: #e65100; }
+        .badge-news { background: #f3e5f5; color: #7b1fa2; }
+
         /* Sites list */
         .sites-list {
             margin-top: 3rem;
@@ -759,6 +775,12 @@
                 <p>Community members affected by the Kona Low storm have set up GoFundMe and Venmo accounts. View the list to find ways to support families directly.</p>
                 <p><a href="https://docs.google.com/spreadsheets/d/1AG8KjiEGxYLxF27oBnbI6I-u6H5crdhI-lf8UonpIl4/edit?gid=194434303#gid=194434303" target="_blank" rel="noopener">View GoFundMe &amp; Venmo List</a></p>
             </div>
+        </section>
+
+        <section class="sites-list">
+            <h2 class="section-title">Community Finds</h2>
+            <p style="margin-bottom: 1rem; color: var(--text-light);">Resources found across the web, updated automatically.</p>
+            <div id="botFindings"><div class="empty-state">Loading...</div></div>
         </section>
 
         <section class="sites-list">
@@ -1199,9 +1221,49 @@
             return div.innerHTML;
         }
 
+        // ── Bot Findings ──
+        async function loadBotFindings() {
+            try {
+                const { data, error } = await sb
+                    .from('bot_findings')
+                    .select('*')
+                    .order('created_at', { ascending: false })
+                    .limit(20);
+
+                const el = document.getElementById('botFindings');
+
+                if (error || !data || data.length === 0) {
+                    el.innerHTML = '<div class="empty-state">No community finds yet. Check back soon.</div>';
+                    return;
+                }
+
+                el.innerHTML = data.map(item => {
+                    const date = new Date(item.created_at).toLocaleDateString();
+                    const badgeClass = 'badge-' + (item.category || 'news');
+                    const label = (item.category || 'news').replace(/-/g, ' ');
+                    return `
+                        <div class="site-card">
+                            <div style="display:flex;align-items:center;gap:0.5rem;margin-bottom:0.5rem;">
+                                <span class="badge ${badgeClass}">${escapeHtml(label)}</span>
+                                <span style="font-size:0.8rem;color:var(--text-light);">${date}</span>
+                            </div>
+                            <div class="site-name">${item.url ? '<a href="' + escapeHtml(item.url) + '" target="_blank" rel="noopener">' + escapeHtml(item.title) + '</a>' : escapeHtml(item.title)}</div>
+                            <div class="site-details">${escapeHtml(item.summary || '')}</div>
+                            ${item.source ? '<div style="font-size:0.8rem;color:var(--text-light);margin-top:0.5rem;">Found on ' + escapeHtml(item.source) + '</div>' : ''}
+                        </div>
+                    `;
+                }).join('');
+            } catch (e) {
+                console.error('Error loading bot findings:', e);
+                document.getElementById('botFindings').innerHTML =
+                    '<div class="empty-state">No community finds yet. Check back soon.</div>';
+            }
+        }
+
         // ── Init ──
         initAuth();
         loadSites();
+        loadBotFindings();
     </script>
 </body>
 
