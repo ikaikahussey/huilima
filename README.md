@@ -1,13 +1,25 @@
-# Hui Lima - Mutual Aid
+# Hui Lima - Mutual Aid Donation Sites
 
-A simple mutual aid website for listing donation sites. Currently focused on supporting evacuations in Waialua and Haleiwa.
+A simple mutual aid website for listing donation sites supporting evacuations in Waialua and Haleiwa.
 
 ## How It Works
 
-- **Visitors** can view approved donation sites and submit new sites via a form
-- **Form submissions** go to Netlify Forms (visible in your Netlify dashboard)
+### Three Netlify Forms:
+
+1. **Donation Sites** - Visitors submit donation sites for review
+2. **Volunteer Requests** - Organizations request volunteers for relief efforts
+3. **Volunteer Sign-ups** - Individuals sign up to volunteer
+
+**Form submissions** go to Netlify Forms (visible in your Netlify dashboard)
+
+### Donation Sites:
 - **You review** submissions and manually add approved sites to `sites.json`
 - **Site updates** automatically when you push changes to the repository
+
+### Volunteer Forms:
+- **Submissions visible** in Netlify Forms dashboard
+- **You coordinate** volunteers by viewing both request and sign-up forms
+- **Match volunteers** to requests manually via email/phone
 
 ## Deployment to Netlify
 
@@ -24,8 +36,31 @@ A simple mutual aid website for listing donation sites. Currently focused on sup
 
 3. **Configure form notifications** (optional):
    - In Netlify dashboard → Site settings → Forms
-   - Set up email notifications when new sites are submitted
+   - Set up email notifications for all three forms:
+     - `donation-sites`
+     - `volunteer-requests`
+     - `volunteer-signups`
    - Or use a webhook to get notified in Slack/Discord
+
+## Managing Forms
+
+### Viewing Submissions
+
+In Netlify dashboard → Forms, you'll see three forms:
+- **donation-sites** - Sites to add to the public list
+- **volunteer-requests** - Organizations/groups needing help
+- **volunteer-signups** - People willing to volunteer
+
+### Processing Volunteer Coordination
+
+1. **Review volunteer requests** in Netlify Forms
+2. **Review volunteer sign-ups** in Netlify Forms
+3. **Match volunteers** to requests based on:
+   - Location/area
+   - Skills needed vs offered
+   - Availability
+4. **Connect them** via email or phone (info from forms)
+5. **Export CSV** from Netlify Forms for easier spreadsheet management
 
 ## Adding New Donation Sites
 
@@ -81,10 +116,17 @@ To use `huilima.org`:
 3. Follow Netlify's DNS instructions
 4. Enable HTTPS (automatic with Netlify)
 
+## Contributing via GitHub
+
+This is an open-source project. Contributions welcome via pull requests:
+- **Repository:** https://github.com/ikaikahussey/huilima
+- **Issues:** Report bugs or suggest features
+- **Pull Requests:** Improvements to code, design, or documentation
+
 ## Anti-Spam
 
-The form includes a honeypot field (`bot-field`) to prevent spam bots. Netlify automatically filters these out.
+All forms include a honeypot field (`bot-field`) to prevent spam bots. Netlify automatically filters these out.
 
 ## Support
 
-For issues or questions, contact the site administrator.
+For issues or questions, contact the site administrator or open an issue on GitHub.

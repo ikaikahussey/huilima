@@ -97,6 +97,15 @@
             margin-bottom: 3rem;
         }
 
+        .volunteer-request,
+        .volunteer-signup {
+            background: var(--bg-subtle);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 2rem;
+            margin-bottom: 3rem;
+        }
+
         .form-group {
             margin-bottom: 1.5rem;
         }
@@ -213,6 +222,28 @@
             border-top: 1px solid var(--border);
         }
 
+        .site-footer {
+            margin-top: 4rem;
+            padding-top: 2rem;
+            border-top: 1px solid var(--border);
+            text-align: center;
+            color: var(--text-light);
+        }
+
+        .site-footer p {
+            margin-bottom: 0.5rem;
+        }
+
+        .site-footer a {
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .site-footer a:hover {
+            text-decoration: underline;
+        }
+
         .county-alert {
             background: var(--bg-subtle);
             border: 1px solid var(--border);
@@ -270,6 +301,11 @@
                 padding: 1.5rem;
             }
 
+            .volunteer-request,
+            .volunteer-signup {
+                padding: 1.5rem;
+            }
+
             .site-card {
                 padding: 1.25rem;
             }
@@ -299,7 +335,7 @@
 
         <div class="info-box">
             <p>We're collecting donations to support the ohana in Waialua and Haleiwa that are evacuating. List your donation sites here.</p>
-            <p><a href="https://wehewehe.org/gsdl2.85/cgi-bin/hdict?e=q-11000-00---off-0hdict--00-1----0-10-0---0---0direct-10-ED--4--textpukuielbert%2ctextmamaka-----0-1l--11-haw-Zz-1---Zz-1-home-hui--00-3-1-00-0--4----0-0-11-00-0utfZz-8-00&a=d&d=D11567" target="_blank" rel="noopener">Hui</a> – "group" or "club" and <a href="https://wehewehe.org/gsdl2.85/cgi-bin/hdict?e=q-11000-00---off-0hdict--00-1----0-10-0---0---0direct-10-ED--4--textpukuielbert%2ctextmamaka-----0-1l--11-haw-Zz-1---Zz-1-home-lima--00-3-1-00-0--4----0-0-11-00-0utfZz-8-00&a=d&d=D13002" target="_blank" rel="noopener">lima</a> – "hand" or "five" — together they represent hands working together.</p>
+            <p><strong>What is Hui Lima?</strong> <a href="https://wehewehe.org/gsdl2.85/cgi-bin/hdict?e=q-11000-00---off-0hdict--00-1----0-10-0---0---0direct-10-ED--4--textpukuielbert%2ctextmamaka-----0-1l--11-haw-Zz-1---Zz-1-home-hui--00-3-1-00-0--4----0-0-11-00-0utfZz-8-00&a=d&d=D11567" target="_blank" rel="noopener">Hui</a> means "group" or "club" and <a href="https://wehewehe.org/gsdl2.85/cgi-bin/hdict?e=q-11000-00---off-0hdict--00-1----0-10-0---0---0direct-10-ED--4--textpukuielbert%2ctextmamaka-----0-1l--11-haw-Zz-1---Zz-1-home-lima--00-3-1-00-0--4----0-0-11-00-0utfZz-8-00&a=d&d=D13002" target="_blank" rel="noopener">lima</a> means "hand" or "five" — together they represent hands working together.</p>
         </div>
 
         <section class="add-site">
@@ -327,6 +363,70 @@
                     <input type="text" id="siteContact" name="siteContact" placeholder="e.g., (808) 555-1234 or @username">
                 </div>
                 <button type="submit">Submit for Review</button>
+            </form>
+        </section>
+
+        <section class="add-site">
+            <h2 class="section-title">Request Volunteers</h2>
+            <p style="margin-bottom: 1.5rem; color: var(--text-light);">Need volunteers? Submit your request and we'll share it with our volunteer network.</p>
+            <form name="volunteer-requests" method="POST" data-netlify="true" netlify-honeypot="bot-field-2">
+                <input type="hidden" name="form-name" value="volunteer-requests">
+                <p hidden>
+                    <label>Don't fill this out: <input name="bot-field-2"></label>
+                </p>
+                <div class="form-group">
+                    <label for="orgName">Organization / Name</label>
+                    <input type="text" id="orgName" name="orgName" required placeholder="e.g., Waialua Community Center">
+                </div>
+                <div class="form-group">
+                    <label for="volunteerLocation">Location</label>
+                    <input type="text" id="volunteerLocation" name="volunteerLocation" required placeholder="e.g., Waialua, HI">
+                </div>
+                <div class="form-group">
+                    <label for="volunteerNeeds">What help do you need?</label>
+                    <textarea id="volunteerNeeds" name="volunteerNeeds" required placeholder="e.g., Need 5 volunteers to help sort donations on Saturday 10am-2pm. Must be able to lift 25 lbs."></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="volunteerContact">Contact Information</label>
+                    <input type="text" id="volunteerContact" name="volunteerContact" required placeholder="e.g., (808) 555-1234 or volunteer@example.com">
+                </div>
+                <button type="submit">Submit Request</button>
+            </form>
+        </section>
+
+        <section class="add-site">
+            <h2 class="section-title">Sign Up to Volunteer</h2>
+            <p style="margin-bottom: 1.5rem; color: var(--text-light);">Want to help? Sign up and we'll connect you with volunteer opportunities.</p>
+            <form name="volunteer-signups" method="POST" data-netlify="true" netlify-honeypot="bot-field-3">
+                <input type="hidden" name="form-name" value="volunteer-signups">
+                <p hidden>
+                    <label>Don't fill this out: <input name="bot-field-3"></label>
+                </p>
+                <div class="form-group">
+                    <label for="volunteerName">Your Name</label>
+                    <input type="text" id="volunteerName" name="volunteerName" required placeholder="e.g., John Smith">
+                </div>
+                <div class="form-group">
+                    <label for="volunteerEmail">Email</label>
+                    <input type="email" id="volunteerEmail" name="volunteerEmail" required placeholder="e.g., john@example.com">
+                </div>
+                <div class="form-group">
+                    <label for="volunteerPhone">Phone (optional)</label>
+                    <input type="tel" id="volunteerPhone" name="volunteerPhone" placeholder="e.g., (808) 555-1234">
+                </div>
+                <div class="form-group">
+                    <label for="volunteerArea">Area / Location</label>
+                    <input type="text" id="volunteerArea" name="volunteerArea" required placeholder="e.g., North Shore, Central Oahu">
+                </div>
+                <div class="form-group">
+                    <label for="volunteerSkills">Skills / Availability</label>
+                    <textarea id="volunteerSkills" name="volunteerSkills" placeholder="e.g., Available weekends, have truck for transport, bilingual Spanish/English"></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="volunteerAvailability">Availability</label>
+                    <textarea id="volunteerAvailability" name="volunteerAvailability" placeholder="e.g., Weekends only, Mon-Fri after 5pm, flexible"></textarea>
+                </div>
+                <button type="submit">Sign Up</button>
             </form>
         </section>
 
@@ -373,6 +473,11 @@
                 </ul>
             </div>
         </section>
+
+        <footer class="site-footer">
+            <p>This site is open source. We welcome contributions and improvements.</p>
+            <p><a href="https://github.com/ikaikahussey/huilima" target="_blank" rel="noopener">View on GitHub</a> • Pull requests welcome</p>
+        </footer>
     </div>
 
     <script>
