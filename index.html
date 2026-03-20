@@ -1033,7 +1033,10 @@
         </section>
 
         <section class="sites-list">
-            <h2 class="section-title">Donation Sites</h2>
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1.5rem;">
+                <h2 class="section-title" style="margin-bottom:0;">Donation Sites</h2>
+                <button class="action-btn" style="flex:none;min-width:unset;padding:0.5rem 1.25rem;font-size:0.85rem;" onclick="openDonationForm()">+ Add Site</button>
+            </div>
             <div id="sitesList"></div>
         </section>
 
@@ -1621,6 +1624,16 @@
         }
 
         // ── Form Toggle ──
+        function openDonationForm() {
+            const form = document.getElementById('donationForm');
+            const btn = document.querySelectorAll('.action-btn')[0];
+            document.querySelectorAll('.form-section').forEach(f => f.classList.remove('visible'));
+            document.querySelectorAll('.action-btn').forEach(b => b.classList.remove('active'));
+            form.classList.add('visible');
+            btn.classList.add('active');
+            form.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+
         function toggleForm(formId, btn) {
             const form = document.getElementById(formId);
             const isVisible = form.classList.contains('visible');
