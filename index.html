@@ -262,11 +262,90 @@
         /* User dashboard */
         .dashboard {
             display: none;
-            margin-bottom: 3rem;
         }
 
-        .dashboard.visible {
+        /* Slide-over panel */
+        .slideover-backdrop {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.3);
+            z-index: 990;
+        }
+
+        .slideover-backdrop.visible {
             display: block;
+        }
+
+        .slideover {
+            position: fixed;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            width: 100%;
+            max-width: 480px;
+            background: var(--bg);
+            box-shadow: -4px 0 24px rgba(0,0,0,0.15);
+            z-index: 991;
+            transform: translateX(100%);
+            transition: transform 0.3s ease;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .slideover.visible {
+            transform: translateX(0);
+        }
+
+        .slideover-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 1.25rem 1.5rem;
+            border-bottom: 1px solid var(--border);
+            flex-shrink: 0;
+        }
+
+        .slideover-header h2 {
+            font-size: 1.1rem;
+            font-weight: 700;
+            margin: 0;
+        }
+
+        .slideover-close {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--text-light);
+            line-height: 1;
+            padding: 0.25rem 0.5rem;
+        }
+
+        .slideover-close:hover { color: var(--text); }
+
+        .slideover-body {
+            flex: 1;
+            overflow-y: auto;
+            padding: 1.5rem;
+        }
+
+        .btn-my-activity {
+            padding: 0.5rem 1rem;
+            font-size: 0.85rem;
+            border-radius: 6px;
+            cursor: pointer;
+            font-family: inherit;
+            font-weight: 500;
+            border: 1px solid var(--primary);
+            background: transparent;
+            color: var(--primary);
+            transition: all 0.2s ease;
+        }
+
+        .btn-my-activity:hover {
+            background: var(--primary);
+            color: white;
         }
 
         .dashboard-grid {
@@ -501,6 +580,114 @@
             opacity: 1;
         }
 
+        /* Detail modal */
+        .detail-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.4);
+            z-index: 998;
+            justify-content: center;
+            align-items: flex-start;
+            padding: 2rem 1rem;
+            overflow-y: auto;
+        }
+
+        .detail-overlay.visible {
+            display: flex;
+        }
+
+        .detail-modal {
+            background: var(--bg);
+            border-radius: 12px;
+            padding: 2rem;
+            width: 100%;
+            max-width: 560px;
+            margin: auto;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.2);
+            position: relative;
+        }
+
+        .detail-modal-close {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--text-light);
+            line-height: 1;
+            padding: 0.25rem 0.5rem;
+        }
+
+        .detail-modal-close:hover { color: var(--text); }
+
+        .detail-meta {
+            color: var(--text-light);
+            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .detail-section {
+            margin-top: 1.5rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid var(--border);
+        }
+
+        .detail-section h3 {
+            font-size: 1rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+
+        .helper-count {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.35rem;
+            background: #ede9fe;
+            color: var(--primary);
+            font-size: 0.78rem;
+            font-weight: 600;
+            padding: 0.2rem 0.55rem;
+            border-radius: 999px;
+            margin-top: 0.5rem;
+        }
+
+        .helper-list {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+            margin-bottom: 1rem;
+        }
+
+        .helper-item {
+            background: var(--bg-subtle);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 0.75rem 1rem;
+            font-size: 0.9rem;
+        }
+
+        .helper-item-name {
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+        }
+
+        .helper-item-detail {
+            color: var(--text-light);
+            font-size: 0.85rem;
+        }
+
+        .item-card {
+            cursor: pointer;
+        }
+
+        .item-card:hover {
+            border-color: var(--primary);
+            box-shadow: 0 2px 8px rgba(124,58,237,0.1);
+        }
+
         /* Auth modal */
         .auth-overlay {
             display: none;
@@ -515,6 +702,43 @@
         .auth-overlay.visible {
             display: flex;
         }
+
+        .auth-divider {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin: 1.25rem 0;
+            color: var(--text-light);
+            font-size: 0.85rem;
+        }
+
+        .auth-divider::before,
+        .auth-divider::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: var(--border);
+        }
+
+        .btn-apple {
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.6rem;
+            padding: 0.65rem 1rem;
+            background: #000;
+            color: #fff;
+            border: none;
+            border-radius: 8px;
+            font-family: inherit;
+            font-size: 0.95rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .btn-apple:hover { background: #222; }
 
         .auth-modal {
             background: var(--bg);
@@ -836,11 +1060,11 @@
 
         <!-- Action Buttons -->
         <div class="action-buttons">
-            <button class="action-btn" onclick="toggleForm('donationForm', this)">List a Donation Site</button>
-            <button class="action-btn" onclick="toggleForm('volunteerRequestForm', this)">Post a Volunteer Opportunity</button>
-            <button class="action-btn" onclick="toggleForm('volunteerSignupForm', this)">I Want to Volunteer</button>
-            <button class="action-btn" onclick="toggleForm('itemForm', this)">Free Items Available</button>
+            <button class="action-btn" onclick="toggleForm('volunteerRequestForm', this)">I Need Help</button>
+            <button class="action-btn" onclick="toggleForm('volunteerSignupForm', this)">I Can Help</button>
             <button class="action-btn" onclick="toggleForm('needForm', this)">Items Needed</button>
+            <button class="action-btn" onclick="toggleForm('itemForm', this)">Items Available</button>
+            <button class="action-btn" onclick="toggleForm('donationForm', this)">List a Donation Site</button>
         </div>
 
         <!-- Donation Site Form -->
@@ -870,7 +1094,7 @@
 
         <!-- Volunteer Request Form -->
         <section class="form-section" id="volunteerRequestForm">
-            <h2 class="section-title">Post a Volunteer Opportunity</h2>
+            <h2 class="section-title">Post Help Needed</h2>
             <p style="margin-bottom: 1.5rem; color: var(--text-light);">Need volunteers? Post your opportunity and it will appear on the site. <span class="sign-in-hint"><a href="#" onclick="openAuthModal();return false" style="color:var(--primary);font-weight:500;">Sign in</a> to post.</span></p>
             <form onsubmit="return handleVolunteerRequestSubmit(event)">
                 <div class="form-group">
@@ -889,13 +1113,13 @@
                     <label for="volunteerContact">Contact Information</label>
                     <input type="text" id="volunteerContact" name="volunteerContact" placeholder="e.g., (808) 555-1234 or volunteer@example.com">
                 </div>
-                <button type="submit">Post Opportunity</button>
+                <button type="submit">Post</button>
             </form>
         </section>
 
         <!-- Volunteer Signup Form -->
         <section class="form-section" id="volunteerSignupForm">
-            <h2 class="section-title">Sign Up to Volunteer</h2>
+            <h2 class="section-title">I Can Help</h2>
             <p style="margin-bottom: 1.5rem; color: var(--text-light);">Want to help? Sign up and your availability will be posted. <span class="sign-in-hint"><a href="#" onclick="openAuthModal();return false" style="color:var(--primary);font-weight:500;">Sign in</a> to post.</span></p>
             <form onsubmit="return handleVolunteerSignupSubmit(event)">
                 <div class="form-group">
@@ -976,78 +1200,86 @@
             </form>
         </section>
 
-        <!-- User Dashboard (visible when logged in) -->
-        <section class="dashboard" id="dashboard">
-            <h2 class="section-title">My Activity</h2>
-
-            <!-- My Skills -->
-            <div class="dashboard-card" style="margin-bottom:1.5rem;">
-                <h3>My Skills</h3>
-                <p style="font-size:0.85rem;color:var(--text-light);margin-bottom:0.75rem;">What can you offer the community? Type to add skills.</p>
-                <div class="autocomplete-wrapper">
-                    <div class="tags-container" id="skillsTagsContainer" onclick="document.getElementById('skillsInput').focus()">
-                        <input type="text" id="skillsInput" placeholder="Type a skill..." oninput="onSkillInput(event)" onkeydown="onSkillKeydown(event)">
+        <!-- My Activity Slide-over -->
+        <div class="slideover-backdrop" id="slideoverBackdrop" onclick="closeMyActivity()"></div>
+        <div class="slideover" id="myActivitySlideover">
+            <div class="slideover-header">
+                <h2>My Activity</h2>
+                <button class="slideover-close" onclick="closeMyActivity()">&times;</button>
+            </div>
+            <div class="slideover-body">
+                <!-- My Skills -->
+                <div class="dashboard-card" style="margin-bottom:1.5rem;">
+                    <h3>My Skills</h3>
+                    <p style="font-size:0.85rem;color:var(--text-light);margin-bottom:0.75rem;">What can you offer the community? Type to add skills.</p>
+                    <div class="autocomplete-wrapper">
+                        <div class="tags-container" id="skillsTagsContainer" onclick="document.getElementById('skillsInput').focus()">
+                            <input type="text" id="skillsInput" placeholder="Type a skill..." oninput="onSkillInput(event)" onkeydown="onSkillKeydown(event)">
+                        </div>
+                        <div class="autocomplete-list" id="skillsAutocomplete"></div>
                     </div>
-                    <div class="autocomplete-list" id="skillsAutocomplete"></div>
+                    <button onclick="saveSkillsManual()" style="margin-top:0.75rem;padding:0.5rem 1.25rem;font-size:0.85rem;">Save Skills</button>
                 </div>
-                <button onclick="saveSkillsManual()" style="margin-top:0.75rem;padding:0.5rem 1.25rem;font-size:0.85rem;">Save Skills</button>
-            </div>
 
-            <!-- Items to Donate -->
-            <div class="dashboard-card" style="margin-bottom:1.5rem;">
-                <h3>Items I Can Donate</h3>
-                <p style="font-size:0.85rem;color:var(--text-light);margin-bottom:0.75rem;">List items you'd like to give away — like a free marketplace for the community.</p>
-                <form onsubmit="return handleItemSubmit(event)" style="margin-bottom:1rem;">
-                    <div style="display:flex;gap:0.5rem;flex-wrap:wrap;">
-                        <input type="text" id="itemName" required placeholder="Item name" style="flex:2;min-width:150px;">
-                        <input type="text" id="itemDesc" placeholder="Brief description" style="flex:3;min-width:180px;">
-                    </div>
-                    <div style="display:flex;gap:0.5rem;margin-top:0.5rem;flex-wrap:wrap;">
-                        <input type="text" id="itemContact" placeholder="Contact (phone or email)" style="flex:2;min-width:150px;">
-                        <input type="text" id="itemLocation" placeholder="Pickup location" style="flex:2;min-width:150px;">
-                        <button type="submit" style="padding:0.6rem 1.25rem;white-space:nowrap;">Add Item</button>
-                    </div>
-                </form>
-                <div class="items-grid" id="myItems"></div>
-            </div>
+                <!-- Items to Donate -->
+                <div class="dashboard-card" style="margin-bottom:1.5rem;">
+                    <h3>Items I Can Donate</h3>
+                    <p style="font-size:0.85rem;color:var(--text-light);margin-bottom:0.75rem;">List items you'd like to give away.</p>
+                    <form onsubmit="return handleItemSubmit(event)" style="margin-bottom:1rem;">
+                        <div style="display:flex;gap:0.5rem;flex-wrap:wrap;">
+                            <input type="text" id="itemName" required placeholder="Item name" style="flex:2;min-width:130px;">
+                            <input type="text" id="itemDesc" placeholder="Brief description" style="flex:3;min-width:160px;">
+                        </div>
+                        <div style="display:flex;gap:0.5rem;margin-top:0.5rem;flex-wrap:wrap;">
+                            <input type="text" id="itemContact" placeholder="Contact" style="flex:2;min-width:130px;">
+                            <input type="text" id="itemLocation" placeholder="Pickup location" style="flex:2;min-width:130px;">
+                            <button type="submit" style="padding:0.6rem 1.25rem;white-space:nowrap;">Add</button>
+                        </div>
+                    </form>
+                    <div class="items-grid" id="myItems"></div>
+                </div>
 
-            <!-- Items I Need -->
-            <div class="dashboard-card" style="margin-bottom:1.5rem;">
-                <h3>Items I Need</h3>
-                <p style="font-size:0.85rem;color:var(--text-light);margin-bottom:0.75rem;">Let the community know what you need — someone may have it.</p>
-                <form onsubmit="return handleNeedSubmit(event)" style="margin-bottom:1rem;">
-                    <div style="display:flex;gap:0.5rem;flex-wrap:wrap;">
-                        <input type="text" id="needName" required placeholder="What do you need?" style="flex:2;min-width:150px;">
-                        <input type="text" id="needDesc" placeholder="Details (size, quantity, urgency)" style="flex:3;min-width:180px;">
-                    </div>
-                    <div style="display:flex;gap:0.5rem;margin-top:0.5rem;flex-wrap:wrap;">
-                        <input type="text" id="needContact" placeholder="Contact (phone or email)" style="flex:2;min-width:150px;">
-                        <input type="text" id="needLocation" placeholder="Your area" style="flex:2;min-width:150px;">
-                        <button type="submit" style="padding:0.6rem 1.25rem;white-space:nowrap;">Post Need</button>
-                    </div>
-                </form>
-                <div class="items-grid" id="myNeeds"></div>
-            </div>
+                <!-- Items I Need -->
+                <div class="dashboard-card" style="margin-bottom:1.5rem;">
+                    <h3>Items I Need</h3>
+                    <p style="font-size:0.85rem;color:var(--text-light);margin-bottom:0.75rem;">Let the community know what you need.</p>
+                    <form onsubmit="return handleNeedSubmit(event)" style="margin-bottom:1rem;">
+                        <div style="display:flex;gap:0.5rem;flex-wrap:wrap;">
+                            <input type="text" id="needName" required placeholder="What do you need?" style="flex:2;min-width:130px;">
+                            <input type="text" id="needDesc" placeholder="Details" style="flex:3;min-width:160px;">
+                        </div>
+                        <div style="display:flex;gap:0.5rem;margin-top:0.5rem;flex-wrap:wrap;">
+                            <input type="text" id="needContact" placeholder="Contact" style="flex:2;min-width:130px;">
+                            <input type="text" id="needLocation" placeholder="Your area" style="flex:2;min-width:130px;">
+                            <button type="submit" style="padding:0.6rem 1.25rem;white-space:nowrap;">Post</button>
+                        </div>
+                    </form>
+                    <div class="items-grid" id="myNeeds"></div>
+                </div>
 
-            <div class="dashboard-grid">
-                <div class="dashboard-card">
-                    <h3>Opportunities I Posted</h3>
-                    <div id="myListings">
-                        <p class="dashboard-empty">No opportunities posted yet.</p>
+                <div class="dashboard-grid">
+                    <div class="dashboard-card">
+                        <h3>Help Needed I Posted</h3>
+                        <div id="myListings">
+                            <p class="dashboard-empty">No opportunities posted yet.</p>
+                        </div>
+                    </div>
+                    <div class="dashboard-card">
+                        <h3>Sign-Ups</h3>
+                        <div id="mySignups">
+                            <p class="dashboard-empty">No sign-ups yet.</p>
+                        </div>
                     </div>
                 </div>
-                <div class="dashboard-card">
-                    <h3>Volunteer Sign-Ups</h3>
-                    <div id="mySignups">
-                        <p class="dashboard-empty">No sign-ups yet.</p>
-                    </div>
-                </div>
             </div>
-        </section>
+        </div>
+
+        <!-- hidden sentinel so dashboard.classList still works -->
+        <div id="dashboard" class="dashboard"></div>
 
         <!-- Public Items Board (hidden until content exists) -->
         <section class="sites-list" id="publicItemsSection" style="display:none;">
-            <h2 class="section-title">Free Items Available</h2>
+            <h2 class="section-title">Items Available</h2>
             <div class="items-grid" id="publicItems"></div>
         </section>
 
@@ -1059,7 +1291,7 @@
 
         <!-- Public Volunteer Opportunities (hidden until content exists) -->
         <section class="sites-list" id="publicVolunteerSection" style="display:none;">
-            <h2 class="section-title">Volunteer Opportunities</h2>
+            <h2 class="section-title">Help Needed</h2>
             <div class="items-grid" id="publicVolunteerOpportunities"></div>
         </section>
 
@@ -1138,6 +1370,14 @@
 
     <div class="toast" id="toast"></div>
 
+    <!-- Volunteer Detail Modal -->
+    <div class="detail-overlay" id="detailOverlay" onclick="if(event.target===this)closeDetailModal()">
+        <div class="detail-modal">
+            <button class="detail-modal-close" onclick="closeDetailModal()">&times;</button>
+            <div id="detailContent"><!-- filled by JS --></div>
+        </div>
+    </div>
+
     <!-- Auth Modal -->
     <div class="auth-overlay" id="authOverlay" onclick="if(event.target===this)closeAuthModal()">
         <div class="auth-modal">
@@ -1180,6 +1420,12 @@
                     Don't have an account? <a onclick="toggleEmailMode()" style="color:var(--primary);cursor:pointer;font-weight:500;">Sign up</a>
                 </p>
             </form>
+            <!-- Apple Sign In (shown on all tabs) -->
+            <div class="auth-divider">or</div>
+            <button class="btn-apple" onclick="signInWithApple()">
+                <svg width="17" height="17" viewBox="0 0 814 1000" fill="white" xmlns="http://www.w3.org/2000/svg"><path d="M788.1 340.9c-5.8 4.5-108.2 62.2-108.2 190.5 0 148.4 130.3 200.9 134.2 202.2-.6 3.2-20.7 71.9-68.7 141.9-42.8 61.6-87.5 123.1-155.5 123.1s-85.5-39.5-164-39.5c-76 0-103.7 40.8-165.9 40.8s-105-37.5-155.5-103.1C156 747 122 637.4 122 531.3c0-178.3 116.3-272.6 230.6-272.6 62 0 113.7 40.8 152.8 40.8 37.5 0 97.8-43.1 166.8-43.1 27.2 0 108.2 2.6 162.5 97.5zm-234.8-97.7c-29.4 34.5-77 61.2-124.2 57.7-5.8-47.6 17.9-98.5 44.3-130.3 29.4-35.1 83.7-61.9 126.6-62.5 5.2 49.6-14.5 97.6-46.7 135.1z"/></svg>
+                Sign in with Apple
+            </button>
         </div>
     </div>
 
@@ -1253,17 +1499,39 @@
                 const display = currentUser.email
                     || (currentUser.phone ? formatPhoneForDisplay(currentUser.phone) : 'User');
                 authArea.innerHTML = `
-                    <span class="user-name">${escapeHtml(display)}</span>
+                    <button class="btn-my-activity" onclick="openMyActivity()">My Activity</button>
                     <button class="btn-sign-out" onclick="signOut()">Sign Out</button>
                 `;
-                document.getElementById('dashboard').classList.add('visible');
                 renderDashboard();
                 loadMySkills();
                 loadMyItems();
                 loadMyNeeds();
             } else {
                 authArea.innerHTML = `<button class="btn-sign-in" onclick="openAuthModal()">Sign In</button>`;
-                document.getElementById('dashboard').classList.remove('visible');
+                document.getElementById('myActivitySlideover').classList.remove('visible');
+                document.getElementById('slideoverBackdrop').classList.remove('visible');
+            }
+        }
+
+        function openMyActivity() {
+            document.getElementById('myActivitySlideover').classList.add('visible');
+            document.getElementById('slideoverBackdrop').classList.add('visible');
+        }
+
+        function closeMyActivity() {
+            document.getElementById('myActivitySlideover').classList.remove('visible');
+            document.getElementById('slideoverBackdrop').classList.remove('visible');
+        }
+
+        async function signInWithApple() {
+            const { error } = await sb.auth.signInWithOAuth({
+                provider: 'apple',
+                options: { redirectTo: window.location.href }
+            });
+            if (error) {
+                const errorEl = document.getElementById('authError');
+                errorEl.textContent = error.message;
+                errorEl.classList.add('visible');
             }
         }
 
@@ -1972,16 +2240,35 @@
                     section.style.display = 'none';
                     return;
                 }
+
+                // Fetch helper counts for all listings in one query
+                const ids = filtered.map(i => i.id);
+                const { data: helpData } = await sb
+                    .from('user_activity')
+                    .select('data')
+                    .eq('type', 'volunteer_help')
+                    .in('data->>listing_id', ids);
+
+                const countMap = {};
+                (helpData || []).forEach(h => {
+                    const lid = h.data?.listing_id;
+                    if (lid) countMap[lid] = (countMap[lid] || 0) + 1;
+                });
+
                 section.style.display = '';
-                el.innerHTML = filtered.map(item => `
-                    <div class="item-card">
+                el.innerHTML = filtered.map(item => {
+                    const count = countMap[item.id] || 0;
+                    return `
+                    <div class="item-card" onclick="openVolunteerDetail('${item.id}')" title="Click for details">
                         ${item.data.name ? `<div class="item-card-title">${escapeHtml(item.data.name)}</div>` : ''}
                         ${item.data.needs ? `<div class="item-card-desc">${escapeHtml(item.data.needs)}</div>` : ''}
                         ${item.data.location ? `<div class="item-card-desc">${escapeHtml(item.data.location)}</div>` : ''}
                         ${item.data.contact ? `<div class="item-card-contact">${escapeHtml(item.data.contact)}</div>` : ''}
                         <div class="item-card-date">${new Date(item.created_at).toLocaleDateString()}</div>
+                        ${count > 0 ? `<div class="helper-count">✋ ${count} can help</div>` : ''}
                     </div>
-                `).join('');
+                    `;
+                }).join('');
             } catch (e) {
                 console.error('Error loading volunteer opportunities:', e);
                 document.getElementById('publicVolunteerSection').style.display = 'none';
@@ -2020,6 +2307,131 @@
                 console.error('Error loading volunteers:', e);
                 document.getElementById('publicVolunteersSection').style.display = 'none';
             }
+        }
+
+        // ── Volunteer Detail Modal ──
+        async function openVolunteerDetail(listingId) {
+            const overlay = document.getElementById('detailOverlay');
+            const content = document.getElementById('detailContent');
+            content.innerHTML = '<p style="color:var(--text-light);padding:1rem 0;">Loading…</p>';
+            overlay.classList.add('visible');
+
+            // Fetch the listing
+            const { data: listingData, error: listingError } = await sb
+                .from('user_activity')
+                .select('*')
+                .eq('id', listingId)
+                .single();
+
+            if (listingError || !listingData) {
+                content.innerHTML = '<p style="color:var(--danger);">Unable to load details.</p>';
+                return;
+            }
+
+            // Fetch helpers for this listing
+            const { data: helpers } = await sb
+                .from('user_activity')
+                .select('*')
+                .eq('type', 'volunteer_help')
+                .eq('data->>listing_id', listingId)
+                .order('created_at', { ascending: true });
+
+            const d = listingData.data;
+            const helperList = helpers || [];
+            const isOwner = currentUser && currentUser.id === listingData.user_id;
+            const hasAlreadyHelped = currentUser && helperList.some(h => h.user_id === currentUser.id);
+
+            content.innerHTML = `
+                <h2 style="font-size:1.25rem;font-weight:700;margin-bottom:0.5rem;padding-right:2rem;">
+                    ${d.name ? escapeHtml(d.name) : 'Volunteer Opportunity'}
+                </h2>
+                ${d.location ? `<div class="detail-meta">📍 ${escapeHtml(d.location)}</div>` : ''}
+                <div class="detail-meta">Posted ${new Date(listingData.created_at).toLocaleDateString()}</div>
+
+                ${d.needs ? `
+                <div style="margin-top:1rem;line-height:1.7;">${escapeHtml(d.needs)}</div>
+                ` : ''}
+
+                ${d.contact ? `
+                <div style="margin-top:1rem;font-weight:500;color:var(--primary);">Contact: ${escapeHtml(d.contact)}</div>
+                ` : ''}
+
+                <div class="detail-section">
+                    <h3>
+                        ${helperList.length > 0
+                            ? `✋ ${helperList.length} ${helperList.length === 1 ? 'person' : 'people'} can help`
+                            : 'Be the first to help'}
+                    </h3>
+
+                    ${isOwner && helperList.length > 0 ? `
+                    <div class="helper-list">
+                        ${helperList.map(h => `
+                        <div class="helper-item">
+                            <div class="helper-item-name">${h.data.name ? escapeHtml(h.data.name) : 'Anonymous'}</div>
+                            ${h.data.phone ? `<div class="helper-item-detail">📞 ${escapeHtml(h.data.phone)}</div>` : ''}
+                            ${h.data.availability ? `<div class="helper-item-detail">🕐 ${escapeHtml(h.data.availability)}</div>` : ''}
+                            ${h.data.message ? `<div class="helper-item-detail" style="margin-top:0.25rem;">${escapeHtml(h.data.message)}</div>` : ''}
+                        </div>
+                        `).join('')}
+                    </div>
+                    ` : ''}
+
+                    ${hasAlreadyHelped ? `
+                    <p style="color:var(--success);font-weight:500;">✓ You've signed up to help with this.</p>
+                    ` : isOwner ? '' : `
+                    <form onsubmit="return handleHelpOfferSubmit(event, '${listingId}')">
+                        <div class="form-group">
+                            <label for="helpName">Your Name</label>
+                            <input type="text" id="helpName" name="helpName" placeholder="e.g., Kaimana Silva" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="helpPhone">Phone Number</label>
+                            <input type="tel" id="helpPhone" name="helpPhone" placeholder="e.g., (808) 555-1234">
+                        </div>
+                        <div class="form-group">
+                            <label for="helpAvailability">When are you available?</label>
+                            <input type="text" id="helpAvailability" name="helpAvailability" placeholder="e.g., Weekends, any day after 3pm">
+                        </div>
+                        <div class="form-group">
+                            <label for="helpMessage">Note (optional)</label>
+                            <textarea id="helpMessage" name="helpMessage" placeholder="e.g., I have a truck and can lift heavy items"></textarea>
+                        </div>
+                        <button type="submit" id="helpSubmitBtn">I Can Help</button>
+                    </form>
+                    `}
+                </div>
+            `;
+        }
+
+        function closeDetailModal() {
+            document.getElementById('detailOverlay').classList.remove('visible');
+        }
+
+        async function handleHelpOfferSubmit(e, listingId) {
+            e.preventDefault();
+            if (!currentUser) {
+                closeDetailModal();
+                openAuthModal();
+                return false;
+            }
+            const form = e.target;
+            const btn = document.getElementById('helpSubmitBtn');
+            btn.disabled = true;
+            btn.textContent = 'Saving…';
+
+            await saveItem('volunteer_help', {
+                listing_id: listingId,
+                name: form.helpName.value,
+                phone: form.helpPhone.value,
+                availability: form.helpAvailability.value,
+                message: form.helpMessage.value
+            });
+
+            // Re-open the detail to refresh the view
+            await openVolunteerDetail(listingId);
+            loadPublicVolunteerOpportunities();
+            showToast('Thanks! The organizer will be in touch.');
+            return false;
         }
 
         // ── Init ──
