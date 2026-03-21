@@ -941,7 +941,7 @@
         <!-- Free Item Form -->
         <section class="form-section" id="itemForm">
             <h2 class="section-title">List a Free Item</h2>
-            <p style="margin-bottom: 1.5rem; color: var(--text-light);">Offer something to the community. Sign in to post.</p>
+            <p style="margin-bottom: 1.5rem; color: var(--text-light);">Offer something to the community. <a href="#" onclick="openAuthModal();return false" style="color:var(--primary);font-weight:500;">Sign in</a> to post.</p>
             <form onsubmit="return handleItemFormSubmit(event)">
                 <div class="form-group">
                     <label for="itemFormName">Item Name</label>
@@ -966,7 +966,7 @@
         <!-- Need Form -->
         <section class="form-section" id="needForm">
             <h2 class="section-title">Post What You Need</h2>
-            <p style="margin-bottom: 1.5rem; color: var(--text-light);">Let the community know what you need. Sign in to post.</p>
+            <p style="margin-bottom: 1.5rem; color: var(--text-light);">Let the community know what you need. <a href="#" onclick="openAuthModal();return false" style="color:var(--primary);font-weight:500;">Sign in</a> to post.</p>
             <form onsubmit="return handleNeedFormSubmit(event)">
                 <div class="form-group">
                     <label for="needFormName">What do you need?</label>
