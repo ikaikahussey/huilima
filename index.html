@@ -656,6 +656,35 @@
             font-size: 0.9rem;
         }
 
+        .share-buttons {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+            margin-top: 1.25rem;
+        }
+
+        .btn-share {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.35rem;
+            background: transparent;
+            border: 1px solid var(--border);
+            color: var(--text);
+            padding: 0.45rem 0.9rem;
+            border-radius: 6px;
+            font-size: 0.82rem;
+            font-weight: 500;
+            cursor: pointer;
+            font-family: inherit;
+            transition: all 0.2s ease;
+            text-decoration: none;
+        }
+
+        .btn-share:hover {
+            border-color: var(--primary);
+            color: var(--primary);
+        }
+
         .btn-edit-logistics {
             background: transparent;
             border: 1px solid var(--primary);
@@ -2002,7 +2031,7 @@
                 }
                 section.style.display = '';
                 el.innerHTML = data.map(item => `
-                    <div class="item-card">
+                    <div class="item-card" onclick="location.hash='#/need/${item.id}'" title="Click for details">
                         <div class="item-card-title">${escapeHtml(item.data.name)}</div>
                         ${item.data.description ? `<div class="item-card-desc">${escapeHtml(item.data.description)}</div>` : ''}
                         ${item.data.location ? `<div class="item-card-desc">${escapeHtml(item.data.location)}</div>` : ''}
@@ -2425,14 +2454,19 @@
 
         function handleRoute() {
             const hash = window.location.hash;
-            const match = hash.match(/^#\/action\/(.+)$/);
+            const actionMatch = hash.match(/^#\/action\/(.+)$/);
+            const needMatch = hash.match(/^#\/need\/(.+)$/);
             const mainContent = document.getElementById('mainContent');
             const actionPage = document.getElementById('actionPage');
 
-            if (match) {
+            if (actionMatch) {
                 mainContent.style.display = 'none';
                 actionPage.classList.add('visible');
-                renderActionPage(match[1]);
+                renderActionPage(actionMatch[1]);
+            } else if (needMatch) {
+                mainContent.style.display = 'none';
+                actionPage.classList.add('visible');
+                renderNeedPage(needMatch[1]);
             } else {
                 stopLocationSharing();
                 actionPage.classList.remove('visible');
@@ -2600,6 +2634,8 @@
                     `}
                 </div>
 
+                ${buildShareButtons(d.name || 'Volunteer Opportunity', d.needs || '', '/action/' + listingId)}
+
                 ${homingHtml}
                 ${distanceHtml}
             `;
@@ -2608,6 +2644,79 @@
             if (isOwner && d.meetLocation) {
                 pollVolunteerDistances(listingId, d.meetLocation);
             }
+        }
+
+        // ── Share Buttons ──
+        function buildShareButtons(title, description, hashPath) {
+            const pageUrl = window.location.origin + window.location.pathname + '#' + hashPath;
+            const emailSubject = encodeURIComponent('Hui Lima: ' + title);
+            const emailBody = encodeURIComponent((description ? description + '\n\n' : '') + 'View on Hui Lima: ' + pageUrl);
+            const smsBody = encodeURIComponent((title ? title + ' — ' : '') + pageUrl);
+
+            return `
+                <div class="share-buttons">
+                    <a class="btn-share" href="mailto:?subject=${emailSubject}&body=${emailBody}">Email</a>
+                    <a class="btn-share" href="sms:?&body=${smsBody}">Text</a>
+                    <button class="btn-share" onclick="copyLink('${escapeAttr(pageUrl)}')">Copy Link</button>
+                </div>
+            `;
+        }
+
+        function copyLink(url) {
+            navigator.clipboard.writeText(url).then(() => {
+                showToast('Link copied!');
+            }).catch(() => {
+                showToast('Unable to copy link.');
+            });
+        }
+
+        // ── Need Detail Page ──
+        async function renderNeedPage(needId) {
+            const content = document.getElementById('actionPageContent');
+            content.innerHTML = '<p style="color:var(--text-light);padding:1rem 0;">Loading…</p>';
+            window.scrollTo(0, 0);
+
+            const { data: needData, error } = await sb
+                .from('user_activity')
+                .select('*')
+                .eq('id', needId)
+                .single();
+
+            if (error || !needData) {
+                content.innerHTML = '<p style="color:var(--danger);">Unable to load details.</p>';
+                return;
+            }
+
+            const d = needData.data;
+            const isOwner = currentUser && currentUser.id === needData.user_id;
+
+            content.innerHTML = `
+                <h2 class="action-page-title">
+                    ${d.name ? escapeHtml(d.name) : 'Item Needed'}
+                </h2>
+                ${d.location ? `<div class="detail-meta">📍 ${escapeHtml(d.location)}</div>` : ''}
+                <div class="detail-meta">Posted ${new Date(needData.created_at).toLocaleDateString()}</div>
+
+                ${d.description ? `<div style="margin-top:1rem;line-height:1.7;">${escapeHtml(d.description)}</div>` : ''}
+                ${d.contact ? `<div style="margin-top:1rem;font-weight:500;color:var(--primary);">Contact: ${escapeHtml(d.contact)}</div>` : ''}
+
+                ${buildShareButtons(d.name || 'Item Needed', d.description || '', '/need/' + needId)}
+
+                ${isOwner ? `
+                <div class="detail-section">
+                    <button class="btn-edit-logistics" onclick="deleteNeedAndGoBack('${needId}')" style="border-color:var(--danger);color:var(--danger);">Delete This Post</button>
+                </div>
+                ` : ''}
+            `;
+        }
+
+        async function deleteNeedAndGoBack(needId) {
+            if (!currentUser) return;
+            await removeItem(needId);
+            loadPublicNeeds();
+            loadMyNeeds();
+            showToast('Post removed.');
+            location.hash = '';
         }
 
         function escapeAttr(text) {
