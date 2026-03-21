@@ -839,6 +839,8 @@
             <button class="action-btn" onclick="toggleForm('donationForm', this)">List a Donation Site</button>
             <button class="action-btn" onclick="toggleForm('volunteerRequestForm', this)">Post a Volunteer Opportunity</button>
             <button class="action-btn" onclick="toggleForm('volunteerSignupForm', this)">I Want to Volunteer</button>
+            <button class="action-btn" onclick="toggleForm('itemForm', this)">Free Items Available</button>
+            <button class="action-btn" onclick="toggleForm('needForm', this)">Items Needed</button>
         </div>
 
         <!-- Donation Site Form -->
@@ -936,6 +938,56 @@
             </form>
         </section>
 
+        <!-- Free Item Form -->
+        <section class="form-section" id="itemForm">
+            <h2 class="section-title">List a Free Item</h2>
+            <p style="margin-bottom: 1.5rem; color: var(--text-light);">Offer something to the community. Sign in to post.</p>
+            <form onsubmit="return handleItemFormSubmit(event)">
+                <div class="form-group">
+                    <label for="itemFormName">Item Name</label>
+                    <input type="text" id="itemFormName" required placeholder="e.g., Generator, tarps, bottled water">
+                </div>
+                <div class="form-group">
+                    <label for="itemFormDesc">Description</label>
+                    <textarea id="itemFormDesc" placeholder="Condition, quantity, any details"></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="itemFormContact">Contact</label>
+                    <input type="text" id="itemFormContact" placeholder="Phone or email">
+                </div>
+                <div class="form-group">
+                    <label for="itemFormLocation">Pickup Location</label>
+                    <input type="text" id="itemFormLocation" placeholder="e.g., Waialua, North Shore">
+                </div>
+                <button type="submit">List Item</button>
+            </form>
+        </section>
+
+        <!-- Need Form -->
+        <section class="form-section" id="needForm">
+            <h2 class="section-title">Post What You Need</h2>
+            <p style="margin-bottom: 1.5rem; color: var(--text-light);">Let the community know what you need. Sign in to post.</p>
+            <form onsubmit="return handleNeedFormSubmit(event)">
+                <div class="form-group">
+                    <label for="needFormName">What do you need?</label>
+                    <input type="text" id="needFormName" required placeholder="e.g., Chainsaw, clean water, ride to town">
+                </div>
+                <div class="form-group">
+                    <label for="needFormDesc">Details</label>
+                    <textarea id="needFormDesc" placeholder="Size, quantity, urgency, any details"></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="needFormContact">Contact</label>
+                    <input type="text" id="needFormContact" placeholder="Phone or email">
+                </div>
+                <div class="form-group">
+                    <label for="needFormLocation">Your Area</label>
+                    <input type="text" id="needFormLocation" placeholder="e.g., Haleiwa, Waialua">
+                </div>
+                <button type="submit">Post Need</button>
+            </form>
+        </section>
+
         <!-- User Dashboard (visible when logged in) -->
         <section class="dashboard" id="dashboard">
             <h2 class="section-title">My Activity</h2>
@@ -1004,18 +1056,16 @@
             </div>
         </section>
 
-        <!-- Public Items Board -->
-        <section class="sites-list">
+        <!-- Public Items Board (hidden until content exists) -->
+        <section class="sites-list" id="publicItemsSection" style="display:none;">
             <h2 class="section-title">Free Items Available</h2>
-            <p style="margin-bottom: 1rem; color: var(--text-light);">Community members offering items for free. <a href="#" onclick="openAuthModal();return false" style="color:var(--primary);font-weight:500;">Sign in</a> to list your own.</p>
-            <div class="items-grid" id="publicItems"><div class="empty-state">Loading...</div></div>
+            <div class="items-grid" id="publicItems"></div>
         </section>
 
-        <!-- Public Needs Board -->
-        <section class="sites-list">
+        <!-- Public Needs Board (hidden until content exists) -->
+        <section class="sites-list" id="publicNeedsSection" style="display:none;">
             <h2 class="section-title">Items Needed</h2>
-            <p style="margin-bottom: 1rem; color: var(--text-light);">Community members looking for supplies or help. <a href="#" onclick="openAuthModal();return false" style="color:var(--primary);font-weight:500;">Sign in</a> to post what you need.</p>
-            <div class="items-grid" id="publicNeeds"><div class="empty-state">Loading...</div></div>
+            <div class="items-grid" id="publicNeeds"></div>
         </section>
 
         <section class="sites-list">
@@ -1026,10 +1076,10 @@
             </div>
         </section>
 
-        <section class="sites-list">
-            <h2 class="section-title">Community Finds</h2>
+        <section class="sites-list" id="infoSection" style="display:none;">
+            <h2 class="section-title">Info</h2>
             <p style="margin-bottom: 1rem; color: var(--text-light);">Resources found across the web, updated automatically.</p>
-            <div id="botFindings"><div class="empty-state">Loading...</div></div>
+            <div id="botFindings"></div>
         </section>
 
         <section class="sites-list">
@@ -1474,11 +1524,13 @@
                     .order('created_at', { ascending: false })
                     .limit(50);
 
+                const section = document.getElementById('publicItemsSection');
                 const el = document.getElementById('publicItems');
                 if (error || !data || data.length === 0) {
-                    el.innerHTML = '<div class="empty-state">No items available yet. <a href="#" onclick="openAuthModal();return false" style="color:var(--primary);font-weight:500;">Sign in</a> to list something.</div>';
+                    section.style.display = 'none';
                     return;
                 }
+                section.style.display = '';
                 el.innerHTML = data.map(item => `
                     <div class="item-card">
                         <div class="item-card-title">${escapeHtml(item.data.name)}</div>
@@ -1490,8 +1542,7 @@
                 `).join('');
             } catch (e) {
                 console.error('Error loading public items:', e);
-                document.getElementById('publicItems').innerHTML =
-                    '<div class="empty-state">No items available yet.</div>';
+                document.getElementById('publicItemsSection').style.display = 'none';
             }
         }
 
@@ -1553,11 +1604,13 @@
                     .order('created_at', { ascending: false })
                     .limit(50);
 
+                const section = document.getElementById('publicNeedsSection');
                 const el = document.getElementById('publicNeeds');
                 if (error || !data || data.length === 0) {
-                    el.innerHTML = '<div class="empty-state">No needs posted yet. <a href="#" onclick="openAuthModal();return false" style="color:var(--primary);font-weight:500;">Sign in</a> to let the community know what you need.</div>';
+                    section.style.display = 'none';
                     return;
                 }
+                section.style.display = '';
                 el.innerHTML = data.map(item => `
                     <div class="item-card">
                         <div class="item-card-title">${escapeHtml(item.data.name)}</div>
@@ -1569,8 +1622,7 @@
                 `).join('');
             } catch (e) {
                 console.error('Error loading public needs:', e);
-                document.getElementById('publicNeeds').innerHTML =
-                    '<div class="empty-state">No needs posted yet.</div>';
+                document.getElementById('publicNeedsSection').style.display = 'none';
             }
         }
 
@@ -1815,13 +1867,15 @@
                     .order('created_at', { ascending: false })
                     .limit(20);
 
+                const section = document.getElementById('infoSection');
                 const el = document.getElementById('botFindings');
 
                 if (error || !data || data.length === 0) {
-                    el.innerHTML = '<div class="empty-state">No community finds yet. Check back soon.</div>';
+                    section.style.display = 'none';
                     return;
                 }
 
+                section.style.display = '';
                 el.innerHTML = data.map(item => {
                     const date = new Date(item.created_at).toLocaleDateString();
                     const badgeClass = 'badge-' + (item.category || 'news');
@@ -1840,9 +1894,47 @@
                 }).join('');
             } catch (e) {
                 console.error('Error loading bot findings:', e);
-                document.getElementById('botFindings').innerHTML =
-                    '<div class="empty-state">No community finds yet. Check back soon.</div>';
+                document.getElementById('infoSection').style.display = 'none';
             }
+        }
+
+        // ── Standalone Form Handlers (from action buttons) ──
+        async function handleItemFormSubmit(e) {
+            e.preventDefault();
+            if (!currentUser) { openAuthModal(); return false; }
+            await saveItem('item', {
+                name: document.getElementById('itemFormName').value,
+                description: document.getElementById('itemFormDesc').value,
+                contact: document.getElementById('itemFormContact').value,
+                location: document.getElementById('itemFormLocation').value
+            });
+            document.getElementById('itemFormName').value = '';
+            document.getElementById('itemFormDesc').value = '';
+            document.getElementById('itemFormContact').value = '';
+            document.getElementById('itemFormLocation').value = '';
+            loadMyItems();
+            loadPublicItems();
+            showToast('Item listed!');
+            return false;
+        }
+
+        async function handleNeedFormSubmit(e) {
+            e.preventDefault();
+            if (!currentUser) { openAuthModal(); return false; }
+            await saveItem('need', {
+                name: document.getElementById('needFormName').value,
+                description: document.getElementById('needFormDesc').value,
+                contact: document.getElementById('needFormContact').value,
+                location: document.getElementById('needFormLocation').value
+            });
+            document.getElementById('needFormName').value = '';
+            document.getElementById('needFormDesc').value = '';
+            document.getElementById('needFormContact').value = '';
+            document.getElementById('needFormLocation').value = '';
+            loadMyNeeds();
+            loadPublicNeeds();
+            showToast('Need posted!');
+            return false;
         }
 
         // ── Init ──
