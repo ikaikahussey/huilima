@@ -846,19 +846,15 @@
         <!-- Donation Site Form -->
         <section class="form-section" id="donationForm">
             <h2 class="section-title">Submit a Donation Site</h2>
-            <p style="margin-bottom: 1.5rem; color: var(--text-light);">Submit your donation site for review. Approved sites will be added to the list.</p>
-            <form name="donation-sites" method="POST" data-netlify="true" netlify-honeypot="bot-field" onsubmit="return handleDonationSubmit(event)">
-                <input type="hidden" name="form-name" value="donation-sites">
-                <p hidden>
-                    <label>Don't fill this out: <input name="bot-field"></label>
-                </p>
+            <p style="margin-bottom: 1.5rem; color: var(--text-light);">Submit your donation site and it will appear on the site. <span class="sign-in-hint"><a href="#" onclick="openAuthModal();return false" style="color:var(--primary);font-weight:500;">Sign in</a> to post.</span></p>
+            <form onsubmit="return handleDonationSubmit(event)">
                 <div class="form-group">
                     <label for="siteName">Site Name</label>
-                    <input type="text" id="siteName" name="siteName" required placeholder="e.g., Kalihi Valley Station">
+                    <input type="text" id="siteName" name="siteName" placeholder="e.g., Kalihi Valley Station">
                 </div>
                 <div class="form-group">
                     <label for="siteLocation">Location / Address</label>
-                    <input type="text" id="siteLocation" name="siteLocation" required placeholder="e.g., 1234 Kalihi St, Honolulu">
+                    <input type="text" id="siteLocation" name="siteLocation" placeholder="e.g., 1234 Kalihi St, Honolulu">
                 </div>
                 <div class="form-group">
                     <label for="siteDetails">Details (hours, needs, instructions)</label>
@@ -868,34 +864,30 @@
                     <label for="siteContact">Contact (phone, email, or social media)</label>
                     <input type="text" id="siteContact" name="siteContact" placeholder="e.g., (808) 555-1234 or @username">
                 </div>
-                <button type="submit">Submit for Review</button>
+                <button type="submit">Submit</button>
             </form>
         </section>
 
         <!-- Volunteer Request Form -->
         <section class="form-section" id="volunteerRequestForm">
             <h2 class="section-title">Post a Volunteer Opportunity</h2>
-            <p style="margin-bottom: 1.5rem; color: var(--text-light);">Need volunteers? Post your opportunity and we'll share it with our volunteer network.</p>
-            <form name="volunteer-requests" method="POST" data-netlify="true" netlify-honeypot="bot-field-2" onsubmit="return handleVolunteerRequestSubmit(event)">
-                <input type="hidden" name="form-name" value="volunteer-requests">
-                <p hidden>
-                    <label>Don't fill this out: <input name="bot-field-2"></label>
-                </p>
+            <p style="margin-bottom: 1.5rem; color: var(--text-light);">Need volunteers? Post your opportunity and it will appear on the site. <span class="sign-in-hint"><a href="#" onclick="openAuthModal();return false" style="color:var(--primary);font-weight:500;">Sign in</a> to post.</span></p>
+            <form onsubmit="return handleVolunteerRequestSubmit(event)">
                 <div class="form-group">
                     <label for="orgName">Organization / Name</label>
-                    <input type="text" id="orgName" name="orgName" required placeholder="e.g., Waialua Community Center">
+                    <input type="text" id="orgName" name="orgName" placeholder="e.g., Waialua Community Center">
                 </div>
                 <div class="form-group">
                     <label for="volunteerLocation">Location</label>
-                    <input type="text" id="volunteerLocation" name="volunteerLocation" required placeholder="e.g., Waialua, HI">
+                    <input type="text" id="volunteerLocation" name="volunteerLocation" placeholder="e.g., Waialua, HI">
                 </div>
                 <div class="form-group">
                     <label for="volunteerNeeds">What help do you need?</label>
-                    <textarea id="volunteerNeeds" name="volunteerNeeds" required placeholder="e.g., Need 5 volunteers to help sort donations on Saturday 10am-2pm. Must be able to lift 25 lbs."></textarea>
+                    <textarea id="volunteerNeeds" name="volunteerNeeds" placeholder="e.g., Need 5 volunteers to help sort donations on Saturday 10am-2pm. Must be able to lift 25 lbs."></textarea>
                 </div>
                 <div class="form-group">
                     <label for="volunteerContact">Contact Information</label>
-                    <input type="text" id="volunteerContact" name="volunteerContact" required placeholder="e.g., (808) 555-1234 or volunteer@example.com">
+                    <input type="text" id="volunteerContact" name="volunteerContact" placeholder="e.g., (808) 555-1234 or volunteer@example.com">
                 </div>
                 <button type="submit">Post Opportunity</button>
             </form>
@@ -904,27 +896,23 @@
         <!-- Volunteer Signup Form -->
         <section class="form-section" id="volunteerSignupForm">
             <h2 class="section-title">Sign Up to Volunteer</h2>
-            <p style="margin-bottom: 1.5rem; color: var(--text-light);">Want to help? Sign up and we'll connect you with volunteer opportunities.</p>
-            <form name="volunteer-signups" method="POST" data-netlify="true" netlify-honeypot="bot-field-3" onsubmit="return handleVolunteerSignupSubmit(event)">
-                <input type="hidden" name="form-name" value="volunteer-signups">
-                <p hidden>
-                    <label>Don't fill this out: <input name="bot-field-3"></label>
-                </p>
+            <p style="margin-bottom: 1.5rem; color: var(--text-light);">Want to help? Sign up and your availability will be posted. <span class="sign-in-hint"><a href="#" onclick="openAuthModal();return false" style="color:var(--primary);font-weight:500;">Sign in</a> to post.</span></p>
+            <form onsubmit="return handleVolunteerSignupSubmit(event)">
                 <div class="form-group">
                     <label for="volunteerName">Your Name</label>
-                    <input type="text" id="volunteerName" name="volunteerName" required placeholder="e.g., John Smith">
+                    <input type="text" id="volunteerName" name="volunteerName" placeholder="e.g., John Smith">
                 </div>
                 <div class="form-group">
                     <label for="volunteerEmail">Email</label>
-                    <input type="email" id="volunteerEmail" name="volunteerEmail" required placeholder="e.g., john@example.com">
+                    <input type="email" id="volunteerEmail" name="volunteerEmail" placeholder="e.g., john@example.com">
                 </div>
                 <div class="form-group">
-                    <label for="volunteerPhone">Phone (optional)</label>
+                    <label for="volunteerPhone">Phone</label>
                     <input type="tel" id="volunteerPhone" name="volunteerPhone" placeholder="e.g., (808) 555-1234">
                 </div>
                 <div class="form-group">
                     <label for="volunteerArea">Area / Location</label>
-                    <input type="text" id="volunteerArea" name="volunteerArea" required placeholder="e.g., North Shore, Central Oahu">
+                    <input type="text" id="volunteerArea" name="volunteerArea" placeholder="e.g., North Shore, Central Oahu">
                 </div>
                 <div class="form-group">
                     <label for="volunteerSkills">Skills</label>
@@ -941,7 +929,7 @@
         <!-- Free Item Form -->
         <section class="form-section" id="itemForm">
             <h2 class="section-title">List a Free Item</h2>
-            <p style="margin-bottom: 1.5rem; color: var(--text-light);">Offer something to the community. <a href="#" onclick="openAuthModal();return false" style="color:var(--primary);font-weight:500;">Sign in</a> to post.</p>
+            <p style="margin-bottom: 1.5rem; color: var(--text-light);">Offer something to the community. <span class="sign-in-hint"><a href="#" onclick="openAuthModal();return false" style="color:var(--primary);font-weight:500;">Sign in</a> to post.</span></p>
             <form onsubmit="return handleItemFormSubmit(event)">
                 <div class="form-group">
                     <label for="itemFormName">Item Name</label>
@@ -966,7 +954,7 @@
         <!-- Need Form -->
         <section class="form-section" id="needForm">
             <h2 class="section-title">Post What You Need</h2>
-            <p style="margin-bottom: 1.5rem; color: var(--text-light);">Let the community know what you need. <a href="#" onclick="openAuthModal();return false" style="color:var(--primary);font-weight:500;">Sign in</a> to post.</p>
+            <p style="margin-bottom: 1.5rem; color: var(--text-light);">Let the community know what you need. <span class="sign-in-hint"><a href="#" onclick="openAuthModal();return false" style="color:var(--primary);font-weight:500;">Sign in</a> to post.</span></p>
             <form onsubmit="return handleNeedFormSubmit(event)">
                 <div class="form-group">
                     <label for="needFormName">What do you need?</label>
@@ -1002,6 +990,7 @@
                     </div>
                     <div class="autocomplete-list" id="skillsAutocomplete"></div>
                 </div>
+                <button onclick="saveSkillsManual()" style="margin-top:0.75rem;padding:0.5rem 1.25rem;font-size:0.85rem;">Save Skills</button>
             </div>
 
             <!-- Items to Donate -->
@@ -1066,6 +1055,18 @@
         <section class="sites-list" id="publicNeedsSection" style="display:none;">
             <h2 class="section-title">Items Needed</h2>
             <div class="items-grid" id="publicNeeds"></div>
+        </section>
+
+        <!-- Public Volunteer Opportunities (hidden until content exists) -->
+        <section class="sites-list" id="publicVolunteerSection" style="display:none;">
+            <h2 class="section-title">Volunteer Opportunities</h2>
+            <div class="items-grid" id="publicVolunteerOpportunities"></div>
+        </section>
+
+        <!-- Public Volunteers Available (hidden until content exists) -->
+        <section class="sites-list" id="publicVolunteersSection" style="display:none;">
+            <h2 class="section-title">Volunteers Available</h2>
+            <div class="items-grid" id="publicVolunteers"></div>
         </section>
 
         <section class="sites-list">
@@ -1242,6 +1243,11 @@
 
         function updateAuthUI() {
             const authArea = document.getElementById('authArea');
+
+            // Toggle "Sign in to post" hints
+            document.querySelectorAll('.sign-in-hint').forEach(el => {
+                el.style.display = currentUser ? 'none' : '';
+            });
 
             if (currentUser) {
                 const display = currentUser.email
@@ -1450,6 +1456,11 @@
             currentSkills = currentSkills.filter(s => s !== skill);
             renderSkillTags();
             await saveSkills();
+        }
+
+        async function saveSkillsManual() {
+            await saveSkills();
+            showToast('Skills saved!');
         }
 
         async function saveSkills() {
@@ -1701,51 +1712,57 @@
 
         // ── Form Submissions ──
         async function handleDonationSubmit(e) {
-            if (currentUser) {
-                const form = e.target;
-                await saveItem('listing', {
-                    category: 'donation-site',
-                    name: form.siteName.value,
-                    location: form.siteLocation.value,
-                    details: form.siteDetails.value,
-                    contact: form.siteContact.value
-                });
-                renderDashboard();
-            }
-            showToast('Donation site submitted for review!');
-            return true;
+            e.preventDefault();
+            if (!currentUser) { openAuthModal(); return false; }
+            const form = e.target;
+            await saveItem('listing', {
+                category: 'donation-site',
+                name: form.siteName.value,
+                location: form.siteLocation.value,
+                details: form.siteDetails.value,
+                contact: form.siteContact.value
+            });
+            form.reset();
+            renderDashboard();
+            showToast('Donation site submitted!');
+            return false;
         }
 
         async function handleVolunteerRequestSubmit(e) {
-            if (currentUser) {
-                const form = e.target;
-                await saveItem('listing', {
-                    category: 'volunteer-request',
-                    name: form.orgName.value,
-                    location: form.volunteerLocation.value,
-                    needs: form.volunteerNeeds.value,
-                    contact: form.volunteerContact.value
-                });
-                renderDashboard();
-            }
+            e.preventDefault();
+            if (!currentUser) { openAuthModal(); return false; }
+            const form = e.target;
+            await saveItem('listing', {
+                category: 'volunteer-request',
+                name: form.orgName.value,
+                location: form.volunteerLocation.value,
+                needs: form.volunteerNeeds.value,
+                contact: form.volunteerContact.value
+            });
+            form.reset();
+            renderDashboard();
+            loadPublicVolunteerOpportunities();
             showToast('Volunteer opportunity posted!');
-            return true;
+            return false;
         }
 
         async function handleVolunteerSignupSubmit(e) {
-            if (currentUser) {
-                const form = e.target;
-                await saveItem('signup', {
-                    name: form.volunteerName.value,
-                    email: form.volunteerEmail.value,
-                    area: form.volunteerArea.value,
-                    skills: form.volunteerSkills.value,
-                    availability: form.volunteerAvailability.value
-                });
-                renderDashboard();
-            }
+            e.preventDefault();
+            if (!currentUser) { openAuthModal(); return false; }
+            const form = e.target;
+            await saveItem('signup', {
+                name: form.volunteerName.value,
+                email: form.volunteerEmail.value,
+                phone: form.volunteerPhone.value,
+                area: form.volunteerArea.value,
+                skills: form.volunteerSkills.value,
+                availability: form.volunteerAvailability.value
+            });
+            form.reset();
+            renderDashboard();
+            loadPublicVolunteers();
             showToast('Volunteer sign-up submitted!');
-            return true;
+            return false;
         }
 
         // ── Dashboard ──
@@ -1937,12 +1954,82 @@
             return false;
         }
 
+        // ── Public Volunteer Opportunities ──
+        async function loadPublicVolunteerOpportunities() {
+            try {
+                const { data, error } = await sb
+                    .from('user_activity')
+                    .select('*')
+                    .eq('type', 'listing')
+                    .order('created_at', { ascending: false })
+                    .limit(50);
+
+                const section = document.getElementById('publicVolunteerSection');
+                const el = document.getElementById('publicVolunteerOpportunities');
+                // Filter to volunteer-request category
+                const filtered = (data || []).filter(item => item.data?.category === 'volunteer-request');
+                if (error || filtered.length === 0) {
+                    section.style.display = 'none';
+                    return;
+                }
+                section.style.display = '';
+                el.innerHTML = filtered.map(item => `
+                    <div class="item-card">
+                        ${item.data.name ? `<div class="item-card-title">${escapeHtml(item.data.name)}</div>` : ''}
+                        ${item.data.needs ? `<div class="item-card-desc">${escapeHtml(item.data.needs)}</div>` : ''}
+                        ${item.data.location ? `<div class="item-card-desc">${escapeHtml(item.data.location)}</div>` : ''}
+                        ${item.data.contact ? `<div class="item-card-contact">${escapeHtml(item.data.contact)}</div>` : ''}
+                        <div class="item-card-date">${new Date(item.created_at).toLocaleDateString()}</div>
+                    </div>
+                `).join('');
+            } catch (e) {
+                console.error('Error loading volunteer opportunities:', e);
+                document.getElementById('publicVolunteerSection').style.display = 'none';
+            }
+        }
+
+        // ── Public Volunteers Available ──
+        async function loadPublicVolunteers() {
+            try {
+                const { data, error } = await sb
+                    .from('user_activity')
+                    .select('*')
+                    .eq('type', 'signup')
+                    .order('created_at', { ascending: false })
+                    .limit(50);
+
+                const section = document.getElementById('publicVolunteersSection');
+                const el = document.getElementById('publicVolunteers');
+                if (error || !data || data.length === 0) {
+                    section.style.display = 'none';
+                    return;
+                }
+                section.style.display = '';
+                el.innerHTML = data.map(item => `
+                    <div class="item-card">
+                        ${item.data.name ? `<div class="item-card-title">${escapeHtml(item.data.name)}</div>` : ''}
+                        ${item.data.skills ? `<div class="item-card-desc">${escapeHtml(item.data.skills)}</div>` : ''}
+                        ${item.data.area ? `<div class="item-card-desc">${escapeHtml(item.data.area)}</div>` : ''}
+                        ${item.data.availability ? `<div class="item-card-desc">Availability: ${escapeHtml(item.data.availability)}</div>` : ''}
+                        ${item.data.email ? `<div class="item-card-contact">${escapeHtml(item.data.email)}</div>` : ''}
+                        ${item.data.phone ? `<div class="item-card-contact">${escapeHtml(item.data.phone)}</div>` : ''}
+                        <div class="item-card-date">${new Date(item.created_at).toLocaleDateString()}</div>
+                    </div>
+                `).join('');
+            } catch (e) {
+                console.error('Error loading volunteers:', e);
+                document.getElementById('publicVolunteersSection').style.display = 'none';
+            }
+        }
+
         // ── Init ──
         initAuth();
         loadSites();
         loadBotFindings();
         loadPublicItems();
         loadPublicNeeds();
+        loadPublicVolunteerOpportunities();
+        loadPublicVolunteers();
     </script>
 </body>
 
