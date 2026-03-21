@@ -150,6 +150,26 @@
             flex-wrap: wrap;
         }
 
+        .btn-group {
+            display: flex;
+            flex: 1;
+            min-width: 200px;
+        }
+
+        .btn-group .action-btn {
+            min-width: unset;
+            border-radius: 0;
+        }
+
+        .btn-group .action-btn:first-child {
+            border-radius: 8px 0 0 8px;
+        }
+
+        .btn-group .action-btn:last-child {
+            border-radius: 0 8px 8px 0;
+            border-left: none;
+        }
+
         .action-btn {
             background: var(--bg);
             color: var(--primary);
@@ -1207,16 +1227,20 @@
 
         <!-- Action Buttons -->
         <div class="action-buttons">
-            <button class="action-btn" onclick="toggleForm('volunteerRequestForm', this)">I Need Help</button>
-            <button class="action-btn" onclick="toggleForm('volunteerSignupForm', this)">I Can Help</button>
-            <button class="action-btn" onclick="toggleForm('needForm', this)">Items Needed</button>
-            <button class="action-btn" onclick="toggleForm('itemForm', this)">Items Available</button>
+            <div class="btn-group">
+                <button class="action-btn" onclick="toggleForm('volunteerRequestForm', this)">I Need Help</button>
+                <button class="action-btn" onclick="toggleForm('volunteerSignupForm', this)">I Can Help</button>
+            </div>
+            <div class="btn-group">
+                <button class="action-btn" onclick="toggleForm('needForm', this)">Items Needed</button>
+                <button class="action-btn" onclick="toggleForm('itemForm', this)">Items Available</button>
+            </div>
             <button class="action-btn" onclick="toggleForm('donationForm', this)">List a Donation Site</button>
         </div>
 
         <!-- Donation Site Form -->
         <section class="form-section" id="donationForm">
-            <h2 class="section-title">Submit a Donation Site</h2>
+            <h2 class="section-title">List a Donation Site</h2>
             <p style="margin-bottom: 1.5rem; color: var(--text-light);">Submit your donation site and it will appear on the site. <span class="sign-in-hint"><a href="#" onclick="openAuthModal();return false" style="color:var(--primary);font-weight:500;">Sign in</a> to post.</span></p>
             <form onsubmit="return handleDonationSubmit(event)">
                 <div class="form-group">
@@ -1241,7 +1265,7 @@
 
         <!-- Volunteer Request Form -->
         <section class="form-section" id="volunteerRequestForm">
-            <h2 class="section-title">Post Help Needed</h2>
+            <h2 class="section-title">I Need Help</h2>
             <p style="margin-bottom: 1.5rem; color: var(--text-light);">Need volunteers? Post your opportunity and it will appear on the site. <span class="sign-in-hint"><a href="#" onclick="openAuthModal();return false" style="color:var(--primary);font-weight:500;">Sign in</a> to post.</span></p>
             <form onsubmit="return handleVolunteerRequestSubmit(event)">
                 <div class="form-group">
@@ -1299,7 +1323,7 @@
 
         <!-- Free Item Form -->
         <section class="form-section" id="itemForm">
-            <h2 class="section-title">List a Free Item</h2>
+            <h2 class="section-title">Items Available</h2>
             <p style="margin-bottom: 1.5rem; color: var(--text-light);">Offer something to the community. <span class="sign-in-hint"><a href="#" onclick="openAuthModal();return false" style="color:var(--primary);font-weight:500;">Sign in</a> to post.</span></p>
             <form onsubmit="return handleItemFormSubmit(event)">
                 <div class="form-group">
@@ -1324,7 +1348,7 @@
 
         <!-- Need Form -->
         <section class="form-section" id="needForm">
-            <h2 class="section-title">Post What You Need</h2>
+            <h2 class="section-title">Items Needed</h2>
             <p style="margin-bottom: 1.5rem; color: var(--text-light);">Let the community know what you need. <span class="sign-in-hint"><a href="#" onclick="openAuthModal();return false" style="color:var(--primary);font-weight:500;">Sign in</a> to post.</span></p>
             <form onsubmit="return handleNeedFormSubmit(event)">
                 <div class="form-group">
