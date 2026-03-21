@@ -1,4 +1,4 @@
-# Hui Lima - Mutual Aid Donation Sites
+# Hui Lima - Mutual Aid Coordination
 
 A simple mutual aid website for listing donation sites supporting evacuations in Waialua and Haleiwa.
 
