@@ -1234,6 +1234,141 @@
                 bottom: 1rem;
             }
         }
+
+        /* Network directory */
+        .communities-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 1rem;
+        }
+
+        .community-card {
+            display: flex;
+            gap: 1rem;
+            align-items: flex-start;
+            padding: 1.25rem;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            text-decoration: none;
+            color: inherit;
+            transition: all 0.2s ease;
+        }
+
+        .community-card:hover {
+            border-color: var(--primary);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+
+        .community-avatar {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            object-fit: cover;
+            flex-shrink: 0;
+        }
+
+        .community-avatar-placeholder {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background: var(--primary);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 1.25rem;
+            flex-shrink: 0;
+        }
+
+        .community-card-name {
+            font-weight: 600;
+            font-size: 1.1rem;
+        }
+
+        .community-card-handle {
+            color: var(--primary);
+            font-size: 0.85rem;
+            font-weight: 500;
+        }
+
+        .community-card-location {
+            color: var(--text-light);
+            font-size: 0.85rem;
+        }
+
+        .community-card-desc {
+            color: var(--text-light);
+            font-size: 0.85rem;
+            margin-top: 0.35rem;
+            line-height: 1.5;
+        }
+
+        .feed-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 0.75rem;
+        }
+
+        .feed-card {
+            display: block;
+            padding: 1rem 1.25rem;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            text-decoration: none;
+            color: inherit;
+            transition: all 0.2s ease;
+        }
+
+        .feed-card:hover {
+            border-color: var(--primary);
+        }
+
+        .feed-card-label {
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            color: var(--primary);
+            letter-spacing: 0.03em;
+        }
+
+        .feed-card-title {
+            font-weight: 600;
+            margin-top: 0.15rem;
+        }
+
+        .feed-card-meta {
+            font-size: 0.8rem;
+            color: var(--text-light);
+            margin-top: 0.25rem;
+        }
+
+        /* Create community modal */
+        .create-community-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.4);
+            z-index: 999;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .create-community-overlay.visible {
+            display: flex;
+        }
+
+        .create-community-modal {
+            background: var(--bg);
+            border-radius: 12px;
+            padding: 2rem;
+            width: 100%;
+            max-width: 480px;
+            margin: 1rem;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.2);
+            max-height: 90vh;
+            overflow-y: auto;
+        }
     </style>
 </head>
 
@@ -1241,15 +1376,20 @@
     <div class="container">
         <!-- Action Detail Page (shown via hash routing) -->
         <section id="actionPage">
-            <a class="action-back" onclick="location.hash=''">← Back</a>
+            <a class="action-back" onclick="location.hash=''">&#8592; Back</a>
             <div id="actionPageContent"><!-- filled by JS --></div>
         </section>
+
+        <!-- Network Directory (shown at root URL) -->
+        <div id="networkView" style="display:none;"></div>
 
         <div id="mainContent">
         <header>
             <div class="header-left">
-                <h1>Hui Lima</h1>
-                <small class="">Mutual Aid Coordination</small>
+                <a href="/" style="text-decoration:none;color:inherit;font-size:0.8rem;display:block;margin-bottom:0.25rem;">Hui Lima Network</a>
+                <h1 id="communityName">Hui Lima</h1>
+                <small id="communitySubtitle">Mutual Aid Coordination</small>
+                <small id="communityHandle" style="display:none;color:var(--text-light);margin-left:0.25rem;"></small>
             </div>
             <div class="auth-area" id="authArea">
                 <button class="btn-sign-in" id="btnSignIn" onclick="signIn()">Sign In</button>
@@ -1258,10 +1398,10 @@
 
         <div class="info-box" id="introSection">
             <button class="intro-close" onclick="toggleIntro()" aria-label="Hide intro">&times;</button>
-            <p>We're collecting donations and organizing volunteers to support the residents in Waialua, Haleiwa, and elsewhere that are evacuating. List your donation sites and coordinate volunteer responses here. This is an <a href="https://github.com/ikaikahussey/huilima">open source website</a> and we welcome additional functionality. Can also text with feedback: 808-221-2843.</p>
+            <p id="introText">We're collecting donations and organizing volunteers to support the residents in Waialua, Haleiwa, and elsewhere that are evacuating. List your donation sites and coordinate volunteer responses here. This is an <a href="https://github.com/ikaikahussey/huilima">open source website</a> and we welcome additional functionality. Can also text with feedback: 808-221-2843.</p>
             <p><a href="https://wehewehe.org/gsdl2.85/cgi-bin/hdict?e=q-11000-00---off-0hdict--00-1----0-10-0---0---0direct-10-ED--4--textpukuielbert%2ctextmamaka-----0-1l--11-haw-Zz-1---Zz-1-home-hui--00-3-1-00-0--4----0-0-11-00-0utfZz-8-00&a=d&d=D11567" target="_blank" rel="noopener">Hui</a> means "group" or "club" and <a href="https://wehewehe.org/gsdl2.85/cgi-bin/hdict?e=q-11000-00---off-0hdict--00-1----0-10-0---0---0direct-10-ED--4--textpukuielbert%2ctextmamaka-----0-1l--11-haw-Zz-1---Zz-1-home-lima--00-3-1-00-0--4----0-0-11-00-0utfZz-8-00&a=d&d=D13002" target="_blank" rel="noopener">lima</a> means "hand" or "five" — together they represent hands working together.</p>
         </div>
-        <button class="show-intro-btn" id="showIntroBtn" onclick="toggleIntro()" style="display:none;">ℹ️ About Hui Lima</button>
+        <button class="show-intro-btn" id="showIntroBtn" onclick="toggleIntro()" style="display:none;">About this community</button>
 
         <!-- Action Buttons -->
         <div class="action-buttons">
@@ -1580,6 +1720,48 @@
 
     <div class="toast" id="toast"></div>
 
+    <!-- Create Community Modal -->
+    <div class="create-community-overlay" id="createCommunityOverlay" onclick="if(event.target===this)closeCreateCommunityModal()">
+        <div class="create-community-modal">
+            <button class="auth-close" onclick="closeCreateCommunityModal()">&times;</button>
+            <h2>Start a Community</h2>
+            <p style="color:var(--text-light);margin-bottom:1.5rem;">You'll need an invite code to create a new community.</p>
+            <div class="auth-error" id="createCommunityError"></div>
+            <form onsubmit="return handleCreateCommunity(event)">
+                <div class="form-group">
+                    <label for="ccInviteCode">Invite Code</label>
+                    <input type="text" id="ccInviteCode" required placeholder="e.g., HUILIMA-ALPHA-001">
+                </div>
+                <div class="form-group">
+                    <label for="ccSlug">URL Slug</label>
+                    <input type="text" id="ccSlug" required placeholder="e.g., mauirelief" pattern="[a-z0-9\-]+" title="Lowercase letters, numbers, and hyphens only">
+                    <small style="color:var(--text-light);">huilima.org/<strong id="ccSlugPreview">yourname</strong></small>
+                </div>
+                <div class="form-group">
+                    <label for="ccName">Display Name</label>
+                    <input type="text" id="ccName" required placeholder="e.g., Maui Relief Network">
+                </div>
+                <div class="form-group">
+                    <label for="ccHandle">Social Handle (optional)</label>
+                    <input type="text" id="ccHandle" placeholder="e.g., @mauirelief">
+                </div>
+                <div class="form-group">
+                    <label for="ccDescription">Description</label>
+                    <textarea id="ccDescription" placeholder="What is this community about?"></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="ccLocation">Location</label>
+                    <input type="text" id="ccLocation" placeholder="e.g., Maui, HI">
+                </div>
+                <div class="form-group">
+                    <label for="ccColor">Primary Color (optional)</label>
+                    <input type="color" id="ccColor" value="#7c3aed" style="width:60px;height:36px;padding:2px;">
+                </div>
+                <button type="submit" id="ccSubmitBtn">Create Community</button>
+            </form>
+        </div>
+    </div>
+
     <!-- Auth Modal -->
     <div class="auth-overlay" id="authOverlay" onclick="if(event.target===this)closeAuthModal()">
         <div class="auth-modal">
@@ -1636,11 +1818,16 @@
 
     <script>
         // ── Configuration ──
-        // Replace these with your Supabase project values (safe to be public — RLS protects data)
         const SUPABASE_URL = 'https://jsjiwvpizuwvsuaiebyu.supabase.co';
         const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Impzaml3dnBpenV3dnN1YWllYnl1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQwNDQ0NTQsImV4cCI6MjA4OTYyMDQ1NH0.8SrNb8s6aRmx_gOsO8y0CiwfT3eeQ_B6wH651O3EjX4';
 
         const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+        // ── Community Context ──
+        const pathSegments = window.location.pathname.split('/').filter(Boolean);
+        const communitySlug = pathSegments[0] || null;
+        let currentCommunity = null;
+        let isOrganizer = false;
 
         // ── State ──
         let currentUser = null;
@@ -1663,6 +1850,142 @@
             'Shelter management', 'Case management', 'Forklift operation',
             'Sewing / clothing repair', 'Hauling / moving'
         ];
+
+        // ── Community Loading ──
+        async function loadCommunity() {
+            if (!communitySlug) {
+                // Network directory view
+                document.getElementById('mainContent').style.display = 'none';
+                document.getElementById('actionPage').classList.remove('visible');
+                document.getElementById('networkView').style.display = '';
+                document.title = 'Hui Lima — Mutual Aid Network';
+                await loadNetworkDirectory();
+                return false;
+            }
+
+            const { data, error } = await sb
+                .from('communities')
+                .select('*')
+                .eq('slug', communitySlug)
+                .eq('is_approved', true)
+                .single();
+
+            if (error || !data) {
+                document.getElementById('mainContent').style.display = 'none';
+                document.getElementById('networkView').style.display = '';
+                document.getElementById('networkView').innerHTML = `
+                    <div style="text-align:center;padding:3rem;">
+                        <h2>Community not found</h2>
+                        <p style="color:var(--text-light);margin:1rem 0;">No community exists at <strong>/${escapeHtml(communitySlug)}</strong></p>
+                        <a href="/" style="color:var(--primary);font-weight:500;">Browse all communities</a>
+                    </div>
+                `;
+                return false;
+            }
+
+            currentCommunity = data;
+
+            // Apply branding
+            document.title = `Hui Lima — ${data.name}`;
+            document.getElementById('communityName').textContent = data.name;
+            document.getElementById('communitySubtitle').textContent = data.location || 'Mutual Aid Coordination';
+            if (data.handle) {
+                document.getElementById('communityHandle').textContent = data.handle;
+                document.getElementById('communityHandle').style.display = '';
+            }
+            if (data.description) {
+                document.getElementById('introText').innerHTML = escapeHtml(data.description);
+            }
+            if (data.primary_color && data.primary_color !== '#7c3aed') {
+                document.documentElement.style.setProperty('--primary', data.primary_color);
+            }
+
+            // Show community content, hide network
+            document.getElementById('mainContent').style.display = '';
+            document.getElementById('networkView').style.display = 'none';
+            return true;
+        }
+
+        async function checkOrganizerRole() {
+            if (!currentUser || !currentCommunity) { isOrganizer = false; return; }
+            const { data } = await sb
+                .from('community_members')
+                .select('role')
+                .eq('community_id', currentCommunity.id)
+                .eq('user_id', currentUser.id)
+                .single();
+            isOrganizer = data?.role === 'organizer';
+        }
+
+        async function loadNetworkDirectory() {
+            const { data: communities } = await sb
+                .from('communities')
+                .select('*')
+                .eq('is_approved', true)
+                .order('created_at', { ascending: true });
+
+            const networkEl = document.getElementById('networkView');
+            const cards = (communities || []).map(c => `
+                <a href="/${c.slug}" class="community-card">
+                    ${c.logo_url ? `<img src="${escapeHtml(c.logo_url)}" alt="" class="community-avatar">` : `<div class="community-avatar-placeholder">${escapeHtml(c.name.charAt(0))}</div>`}
+                    <div>
+                        <div class="community-card-name">${escapeHtml(c.name)}</div>
+                        ${c.handle ? `<div class="community-card-handle">${escapeHtml(c.handle)}</div>` : ''}
+                        ${c.location ? `<div class="community-card-location">${escapeHtml(c.location)}</div>` : ''}
+                        ${c.description ? `<div class="community-card-desc">${escapeHtml(c.description).substring(0, 120)}${c.description.length > 120 ? '...' : ''}</div>` : ''}
+                    </div>
+                </a>
+            `).join('');
+
+            // Also load recent activity across all communities for federation feed
+            const { data: recentActivity } = await sb
+                .from('user_activity')
+                .select('id, type, data, created_at, community_id')
+                .in('type', ['listing', 'item', 'need'])
+                .order('created_at', { ascending: false })
+                .limit(10);
+
+            // Map community IDs to names
+            const communityMap = {};
+            (communities || []).forEach(c => { communityMap[c.id] = c; });
+
+            const feedCards = (recentActivity || []).map(item => {
+                const comm = communityMap[item.community_id];
+                if (!comm) return '';
+                const label = item.type === 'listing' ? 'Help Needed' : item.type === 'item' ? 'Item Available' : 'Item Needed';
+                const name = item.data?.name || label;
+                return `
+                    <a href="/${comm.slug}#/${item.type === 'listing' ? 'action' : 'need'}/${item.id}" class="feed-card">
+                        <div class="feed-card-label">${escapeHtml(label)}</div>
+                        <div class="feed-card-title">${escapeHtml(name)}</div>
+                        <div class="feed-card-meta">${escapeHtml(comm.name)} &middot; ${new Date(item.created_at).toLocaleDateString()}</div>
+                    </a>
+                `;
+            }).join('');
+
+            networkEl.innerHTML = `
+                <header style="margin-bottom:2rem;">
+                    <h1>Hui Lima</h1>
+                    <small style="color:var(--text-light);">Mutual Aid Network</small>
+                </header>
+                <div class="info-box">
+                    <p><a href="https://wehewehe.org/gsdl2.85/cgi-bin/hdict?e=q-11000-00---off-0hdict--00-1----0-10-0---0---0direct-10-ED--4--textpukuielbert%2ctextmamaka-----0-1l--11-haw-Zz-1---Zz-1-home-hui--00-3-1-00-0--4----0-0-11-00-0utfZz-8-00&a=d&d=D11567" target="_blank" rel="noopener">Hui</a> means "group" and <a href="https://wehewehe.org/gsdl2.85/cgi-bin/hdict?e=q-11000-00---off-0hdict--00-1----0-10-0---0---0direct-10-ED--4--textpukuielbert%2ctextmamaka-----0-1l--11-haw-Zz-1---Zz-1-home-lima--00-3-1-00-0--4----0-0-11-00-0utfZz-8-00&a=d&d=D13002" target="_blank" rel="noopener">lima</a> means "hand" — together they represent hands working together. Each community below is hosted by a local organizer coordinating mutual aid.</p>
+                </div>
+                <h2 class="section-title">Communities</h2>
+                <div class="communities-grid">${cards || '<p class="dashboard-empty">No communities yet.</p>'}</div>
+                <div style="margin-top:1.5rem;">
+                    <button class="action-btn" onclick="openCreateCommunityModal()" style="min-width:unset;">Start a Community</button>
+                </div>
+                ${feedCards ? `
+                    <h2 class="section-title" style="margin-top:3rem;">Recent Activity</h2>
+                    <div class="feed-grid">${feedCards}</div>
+                ` : ''}
+                <footer class="site-footer">
+                    <p>This site is open source. We welcome contributions and improvements.</p>
+                    <p><a href="https://github.com/ikaikahussey/huilima" target="_blank" rel="noopener">View on GitHub</a></p>
+                </footer>
+            `;
+        }
 
         // ── Supabase Auth ──
         async function initAuth() {
@@ -1934,15 +2257,17 @@
         }
 
         async function saveSkills() {
-            if (!currentUser) return;
+            if (!currentUser || !currentCommunity) return;
             // Delete existing skills record, then insert new one
             await sb.from('user_activity').delete()
-                .eq('user_id', currentUser.id).eq('type', 'skills');
+                .eq('user_id', currentUser.id).eq('type', 'skills')
+                .eq('community_id', currentCommunity.id);
             if (currentSkills.length > 0) {
                 await sb.from('user_activity').insert({
                     user_id: currentUser.id,
                     type: 'skills',
-                    data: { skills: currentSkills }
+                    data: { skills: currentSkills },
+                    community_id: currentCommunity.id
                 });
             }
         }
@@ -1997,11 +2322,13 @@
         }
 
         async function loadPublicItems() {
+            if (!currentCommunity) return;
             try {
                 const { data, error } = await sb
                     .from('user_activity')
                     .select('*')
                     .eq('type', 'item')
+                    .eq('community_id', currentCommunity.id)
                     .order('created_at', { ascending: false })
                     .limit(50);
 
@@ -2077,11 +2404,13 @@
         }
 
         async function loadPublicNeeds() {
+            if (!currentCommunity) return;
             try {
                 const { data, error } = await sb
                     .from('user_activity')
                     .select('*')
                     .eq('type', 'need')
+                    .eq('community_id', currentCommunity.id)
                     .order('created_at', { ascending: false })
                     .limit(50);
 
@@ -2125,13 +2454,14 @@
         }
 
         async function saveItem(type, itemData) {
-            if (!currentUser) return null;
+            if (!currentUser || !currentCommunity) return null;
             const { data, error } = await sb
                 .from('user_activity')
                 .insert({
                     user_id: currentUser.id,
                     type: type,
-                    data: itemData
+                    data: itemData,
+                    community_id: currentCommunity.id
                 })
                 .select()
                 .single();
@@ -2199,17 +2529,25 @@
         // ── Form Submissions ──
         async function handleDonationSubmit(e) {
             e.preventDefault();
-            if (!currentUser) { openAuthModal(); return false; }
+            if (!currentUser || !currentCommunity) { openAuthModal(); return false; }
             const form = e.target;
-            await saveItem('listing', {
-                category: 'donation-site',
-                name: form.siteName.value,
-                location: form.siteLocation.value,
-                details: form.siteDetails.value,
-                contact: form.siteContact.value
-            });
+            const { error } = await sb
+                .from('community_sites')
+                .insert({
+                    community_id: currentCommunity.id,
+                    name: form.siteName.value,
+                    location: form.siteLocation.value,
+                    details: form.siteDetails.value,
+                    contact: form.siteContact.value,
+                    created_by: currentUser.id
+                });
+            if (error) {
+                console.error('Error saving site:', error);
+                showToast('Error saving — please try again.');
+                return false;
+            }
             form.reset();
-            renderDashboard();
+            loadSites();
             showToast('Donation site submitted!');
             return false;
         }
@@ -2317,10 +2655,15 @@
 
         // ── Sites List ──
         async function loadSites() {
+            if (!currentCommunity) return;
             try {
-                const response = await fetch('sites.json');
-                const sites = await response.json();
-                renderSites(sites);
+                const { data, error } = await sb
+                    .from('community_sites')
+                    .select('*')
+                    .eq('community_id', currentCommunity.id)
+                    .order('created_at', { ascending: false });
+                if (error) throw error;
+                renderSites(data || []);
             } catch (error) {
                 console.error('Error loading sites:', error);
                 document.getElementById('sitesList').innerHTML =
@@ -2363,10 +2706,12 @@
 
         // ── Bot Findings ──
         async function loadBotFindings() {
+            if (!currentCommunity) return;
             try {
                 const { data, error } = await sb
                     .from('bot_findings')
                     .select('*')
+                    .eq('community_id', currentCommunity.id)
                     .order('created_at', { ascending: false })
                     .limit(20);
 
@@ -2442,11 +2787,13 @@
 
         // ── Public Volunteer Opportunities ──
         async function loadPublicVolunteerOpportunities() {
+            if (!currentCommunity) return;
             try {
                 const { data, error } = await sb
                     .from('user_activity')
                     .select('*')
                     .eq('type', 'listing')
+                    .eq('community_id', currentCommunity.id)
                     .order('created_at', { ascending: false })
                     .limit(50);
 
@@ -2495,11 +2842,13 @@
 
         // ── Public Volunteers Available ──
         async function loadPublicVolunteers() {
+            if (!currentCommunity) return;
             try {
                 const { data, error } = await sb
                     .from('user_activity')
                     .select('*')
                     .eq('type', 'signup')
+                    .eq('community_id', currentCommunity.id)
                     .order('created_at', { ascending: false })
                     .limit(50);
 
@@ -3021,15 +3370,133 @@
             return false;
         }
 
+        // ── Create Community ──
+        function openCreateCommunityModal() {
+            if (!currentUser) {
+                openAuthModal();
+                return;
+            }
+            document.getElementById('createCommunityOverlay').classList.add('visible');
+            document.getElementById('ccInviteCode').focus();
+        }
+
+        function closeCreateCommunityModal() {
+            document.getElementById('createCommunityOverlay').classList.remove('visible');
+            document.getElementById('createCommunityError').classList.remove('visible');
+        }
+
+        // Live slug preview
+        document.getElementById('ccSlug')?.addEventListener('input', (e) => {
+            const preview = document.getElementById('ccSlugPreview');
+            if (preview) preview.textContent = e.target.value || 'yourname';
+        });
+
+        async function handleCreateCommunity(e) {
+            e.preventDefault();
+            if (!currentUser) { openAuthModal(); return false; }
+
+            const errorEl = document.getElementById('createCommunityError');
+            const btn = document.getElementById('ccSubmitBtn');
+            btn.disabled = true;
+            btn.textContent = 'Creating...';
+            errorEl.classList.remove('visible');
+
+            const inviteCode = document.getElementById('ccInviteCode').value.trim();
+            const slug = document.getElementById('ccSlug').value.trim().toLowerCase();
+            const name = document.getElementById('ccName').value.trim();
+            const handle = document.getElementById('ccHandle').value.trim();
+            const description = document.getElementById('ccDescription').value.trim();
+            const location = document.getElementById('ccLocation').value.trim();
+            const color = document.getElementById('ccColor').value;
+
+            // Validate invite code
+            const { data: codeData, error: codeError } = await sb
+                .from('invite_codes')
+                .select('code')
+                .eq('code', inviteCode)
+                .is('used_by', null)
+                .single();
+
+            if (codeError || !codeData) {
+                errorEl.textContent = 'Invalid or already-used invite code.';
+                errorEl.classList.add('visible');
+                btn.disabled = false;
+                btn.textContent = 'Create Community';
+                return false;
+            }
+
+            // Check slug availability
+            const { data: existing } = await sb
+                .from('communities')
+                .select('id')
+                .eq('slug', slug)
+                .single();
+
+            if (existing) {
+                errorEl.textContent = 'That URL slug is already taken. Try another.';
+                errorEl.classList.add('visible');
+                btn.disabled = false;
+                btn.textContent = 'Create Community';
+                return false;
+            }
+
+            // Create community
+            const { data: community, error: createError } = await sb
+                .from('communities')
+                .insert({
+                    slug,
+                    name,
+                    handle: handle || null,
+                    description: description || null,
+                    location: location || null,
+                    primary_color: color !== '#7c3aed' ? color : null,
+                    created_by: currentUser.id,
+                    is_approved: true
+                })
+                .select()
+                .single();
+
+            if (createError) {
+                errorEl.textContent = createError.message;
+                errorEl.classList.add('visible');
+                btn.disabled = false;
+                btn.textContent = 'Create Community';
+                return false;
+            }
+
+            // Add creator as organizer
+            await sb.from('community_members').insert({
+                community_id: community.id,
+                user_id: currentUser.id,
+                role: 'organizer'
+            });
+
+            // Mark invite code as used
+            await sb.from('invite_codes').update({
+                used_by: currentUser.id,
+                used_at: new Date().toISOString()
+            }).eq('code', inviteCode);
+
+            closeCreateCommunityModal();
+            window.location.href = '/' + slug;
+            return false;
+        }
+
         // ── Init ──
-        initAuth();
-        loadSites();
-        loadBotFindings();
-        loadPublicItems();
-        loadPublicNeeds();
-        loadPublicVolunteerOpportunities();
-        loadPublicVolunteers();
-        handleRoute(); // check hash on initial load
+        (async function init() {
+            const hasCommunity = await loadCommunity();
+            await initAuth();
+            if (hasCommunity) {
+                await checkOrganizerRole();
+                loadSites();
+                loadBotFindings();
+                loadPublicItems();
+                loadPublicNeeds();
+                loadPublicVolunteerOpportunities();
+                loadPublicVolunteers();
+                handleRoute();
+            }
+        })();
     </script>
 </body>
 

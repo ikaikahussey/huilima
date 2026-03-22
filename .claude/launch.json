@@ -4,7 +4,7 @@
     {
       "name": "huilima",
       "runtimeExecutable": "npx",
-      "runtimeArgs": ["serve", "-l", "4321", "."],
+      "runtimeArgs": ["serve", "-s", "-l", "4321", "."],
       "port": 4321
     }
   ]

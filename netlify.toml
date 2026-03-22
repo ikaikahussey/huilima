@@ -7,3 +7,15 @@
   [headers.values]
     Access-Control-Allow-Origin = "*"
     Access-Control-Allow-Methods = "GET, OPTIONS"
+
+# Serve static assets directly
+[[redirects]]
+  from = "/sites.json"
+  to = "/sites.json"
+  status = 200
+
+# Catch-all: serve index.html for path-based community routing
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200

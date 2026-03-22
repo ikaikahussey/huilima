@@ -8,9 +8,11 @@
  *   ?type=needs        → Items needed
  *   ?type=volunteers   → People available to volunteer
  *   ?type=findings     → Bot-curated mutual aid findings
+ *   ?community=slug    → Scope to a specific community
  *   (no type)          → All of the above combined
+ *   (no community)     → Cross-community federation feed
  *
- * Example: /.netlify/functions/api?type=volunteer
+ * Example: /.netlify/functions/api?type=volunteer&community=ikaikahussey
  */
 
 const SUPABASE_URL = 'https://jsjiwvpizuwvsuaiebyu.supabase.co';
@@ -30,13 +32,35 @@ async function sbFetch(path) {
 
 exports.handler = async (event) => {
     const type = event.queryStringParameters?.type;
+    const communitySlug = event.queryStringParameters?.community;
 
     try {
+        // Resolve community ID if slug provided
+        let communityId = null;
+        let communityName = null;
+        if (communitySlug) {
+            const communities = await sbFetch(
+                `communities?select=id,name&slug=eq.${encodeURIComponent(communitySlug)}&is_approved=eq.true&limit=1`
+            );
+            if (communities.length === 0) {
+                return {
+                    statusCode: 404,
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ error: `Community '${communitySlug}' not found` }),
+                };
+            }
+            communityId = communities[0].id;
+            communityName = communities[0].name;
+        }
+
+        // Build community filter for queries
+        const communityFilter = communityId ? `&community_id=eq.${communityId}` : '';
+
         let payload = {};
 
         if (!type || type === 'volunteer') {
             const rows = await sbFetch(
-                'user_activity?select=id,created_at,data&type=eq.listing&order=created_at.desc&limit=50'
+                `user_activity?select=id,created_at,data,community_id${communityFilter}&type=eq.listing&order=created_at.desc&limit=50`
             );
             payload.helpNeeded = rows
                 .filter((r) => r.data?.category === 'volunteer-request')
@@ -47,12 +71,13 @@ exports.handler = async (event) => {
                     needs: r.data.needs,
                     contact: r.data.contact,
                     postedAt: r.created_at,
+                    community_id: r.community_id,
                 }));
         }
 
         if (!type || type === 'items') {
             const rows = await sbFetch(
-                'user_activity?select=id,created_at,data&type=eq.item&order=created_at.desc&limit=50'
+                `user_activity?select=id,created_at,data,community_id${communityFilter}&type=eq.item&order=created_at.desc&limit=50`
             );
             payload.itemsAvailable = rows.map((r) => ({
                 id: r.id,
@@ -61,12 +86,13 @@ exports.handler = async (event) => {
                 contact: r.data.contact,
                 location: r.data.location,
                 postedAt: r.created_at,
+                community_id: r.community_id,
             }));
         }
 
         if (!type || type === 'needs') {
             const rows = await sbFetch(
-                'user_activity?select=id,created_at,data&type=eq.need&order=created_at.desc&limit=50'
+                `user_activity?select=id,created_at,data,community_id${communityFilter}&type=eq.need&order=created_at.desc&limit=50`
             );
             payload.itemsNeeded = rows.map((r) => ({
                 id: r.id,
@@ -75,12 +101,13 @@ exports.handler = async (event) => {
                 contact: r.data.contact,
                 location: r.data.location,
                 postedAt: r.created_at,
+                community_id: r.community_id,
             }));
         }
 
         if (!type || type === 'volunteers') {
             const rows = await sbFetch(
-                'user_activity?select=id,created_at,data&type=eq.signup&order=created_at.desc&limit=50'
+                `user_activity?select=id,created_at,data,community_id${communityFilter}&type=eq.signup&order=created_at.desc&limit=50`
             );
             payload.volunteersAvailable = rows.map((r) => ({
                 id: r.id,
@@ -89,12 +116,13 @@ exports.handler = async (event) => {
                 skills: r.data.skills,
                 availability: r.data.availability,
                 postedAt: r.created_at,
+                community_id: r.community_id,
             }));
         }
 
         if (!type || type === 'findings') {
             const rows = await sbFetch(
-                'bot_findings?select=id,title,category,url,summary,source,created_at&order=created_at.desc&limit=50'
+                `bot_findings?select=id,title,category,url,summary,source,created_at,community_id${communityFilter}&order=created_at.desc&limit=50`
             );
             payload.findings = rows.map((r) => ({
                 id: r.id,
@@ -104,8 +132,13 @@ exports.handler = async (event) => {
                 summary: r.summary,
                 source: r.source,
                 postedAt: r.created_at,
+                community_id: r.community_id,
             }));
         }
+
+        const siteName = communityName
+            ? `Hui Lima — ${communityName}`
+            : 'Hui Lima — Mutual Aid Network';
 
         return {
             statusCode: 200,
@@ -116,8 +149,8 @@ exports.handler = async (event) => {
             },
             body: JSON.stringify({
                 generated: new Date().toISOString(),
-                site: 'Hui Lima — Mutual Aid Coordination',
-                description: 'Kona Low storm relief — Waialua, Haleiwa, North Shore Oahu',
+                site: siteName,
+                community: communitySlug || null,
                 ...payload,
             }, null, 2),
         };
